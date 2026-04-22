@@ -60,7 +60,8 @@ jobs:
             exit 1
           fi
           echo "Updating machine $ID → $FLY_IMAGE"
-          flyctl machine update "$ID" --image "$FLY_IMAGE" --app "$FLY_APP" --yes
+          # `--restart no` ensures Fly does not retry the CMD on failure (one-shot semantics).
+          flyctl machine update "$ID" --image "$FLY_IMAGE" --restart no --app "$FLY_APP" --yes
 
   run:
     name: Wake Fly machine for weekly run

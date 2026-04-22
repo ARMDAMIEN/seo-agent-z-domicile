@@ -3,6 +3,13 @@ primary_region = 'cdg'
 
 [build]
 
+# One-shot scheduled job: never restart on exit. The GH Actions cron is the
+# only thing that should ever wake this machine. Without this, Fly retries the
+# CMD up to 10× on failure — wasting Anthropic credits on every transient or
+# billing error.
+[[restart]]
+  policy = "no"
+
 [[vm]]
   memory = '1gb'
   cpu_kind = 'shared'
