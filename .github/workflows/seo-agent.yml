@@ -1,72 +1,75 @@
-name: SEO Agent (weekly)
+name: SEO Agent
 
 on:
   schedule:
-    # Every Monday at 08:00 UTC
+    # Every Monday at 08:00 UTC — triggers the Fly machine.
     - cron: "0 8 * * 1"
+  push:
+    branches: [main]
+    paths:
+      - "src/**"
+      - "context/**"
+      - "scripts/**"
+      - "package.json"
+      - "package-lock.json"
+      - "Dockerfile"
+      - "fly.toml"
+      - "tsconfig.json"
   workflow_dispatch:
-
-permissions:
-  contents: write
+    inputs:
+      mode:
+        description: "What to do"
+        required: true
+        default: "run"
+        type: choice
+        options:
+          - run         # spawn a one-shot Fly machine (no rebuild)
+          - deploy      # rebuild + push image to Fly registry
+          - deploy-run  # rebuild then immediately run
 
 concurrency:
   group: seo-agent
   cancel-in-progress: false
 
+env:
+  FLY_APP: z-domicile-seo-agent
+  FLY_REGION: cdg
+  FLY_VOLUME: seo_data
+  FLY_IMAGE: registry.fly.io/z-domicile-seo-agent:latest
+
 jobs:
-  run:
+  deploy:
+    name: Build & push image to Fly
+    if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && (inputs.mode == 'deploy' || inputs.mode == 'deploy-run'))
     runs-on: ubuntu-latest
-    timeout-minutes: 30
-
+    timeout-minutes: 20
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          persist-credentials: true
-          fetch-depth: 1
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: "22"
-          cache: "npm"
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Run SEO agent
+      - uses: actions/checkout@v4
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - name: Build & push image
         env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          CLAUDE_MODEL: ${{ vars.CLAUDE_MODEL || 'claude-opus-4-7' }}
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+        run: flyctl deploy --build-only --push --remote-only --app "$FLY_APP"
 
-          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
-          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
-          GSC_REFRESH_TOKEN: ${{ secrets.GSC_REFRESH_TOKEN }}
-          GSC_SITE_URL: ${{ vars.GSC_SITE_URL || 'https://www.z-domicile.fr/' }}
-
-          # The agent commits SEO changes to the FRONTEND repo, using a dedicated PAT.
-          # We deliberately do NOT use the workflow's built-in GITHUB_TOKEN here.
-          GITHUB_TOKEN: ${{ secrets.FRONTEND_GITHUB_TOKEN }}
-          GITHUB_OWNER: ${{ vars.FRONTEND_GITHUB_OWNER }}
-          GITHUB_REPO: ${{ vars.FRONTEND_GITHUB_REPO }}
-          GITHUB_BASE_BRANCH: ${{ vars.FRONTEND_GITHUB_BASE_BRANCH || 'master' }}
-
-          MAX_TASKS_PER_RUN: ${{ vars.MAX_TASKS_PER_RUN || '3' }}
-          RECENT_DONE_COOLDOWN_DAYS: ${{ vars.RECENT_DONE_COOLDOWN_DAYS || '14' }}
-
-          TELEGRAM_BOT_API_KEY: ${{ secrets.TELEGRAM_BOT_API_KEY }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        run: npm start
-
-      - name: Commit updated agent state
-        if: always()
+  run:
+    name: Spawn one-shot Fly machine
+    needs: [deploy]
+    # `always()` lets this job run even when `deploy` is skipped (cron / mode=run).
+    # We still want to bail if `deploy` actually failed.
+    if: |
+      always()
+      && (needs.deploy.result == 'success' || needs.deploy.result == 'skipped')
+      && (github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && (inputs.mode == 'run' || inputs.mode == 'deploy-run')))
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - name: Run agent on Fly
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
         run: |
-          git config user.name "seo-agent[bot]"
-          git config user.email "seo-agent@users.noreply.github.com"
-          git add data/tasks.json data/reports || true
-          if git diff --staged --quiet; then
-            echo "No state changes to commit."
-          else
-            git commit -m "chore(state): update tasks queue + report ($(date -u +%Y-%m-%d)) [skip ci]"
-            git push
-          fi
+          flyctl machine run "$FLY_IMAGE" \
+            --app "$FLY_APP" \
+            --region "$FLY_REGION" \
+            --volume "${FLY_VOLUME}:/app/data" \
+            --rm

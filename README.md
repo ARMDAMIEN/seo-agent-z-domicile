@@ -4,23 +4,24 @@ Weekly Z-Domicile SEO agent. Pulls Google Search Console data, writes a dated an
 
 Built on [`@anthropic-ai/claude-agent-sdk`](https://www.npmjs.com/package/@anthropic-ai/claude-agent-sdk).
 
+**Deployment:** the agent code + persistent state live on a Fly.io app (`z-domicile-seo-agent`) with a mounted volume. A weekly **GitHub Actions** cron triggers a one-shot Fly machine (`flyctl machine run --rm`) — Fly is the runtime, GH Actions is the scheduler.
+
 ## What it does
 
-Every run (once a week via GitHub Actions):
+Every run:
 
-1. Loads context from [context/AGENT_SEO_CONTEXT.md](context/AGENT_SEO_CONTEXT.md) + [context/SEO_TRACKER.md](context/SEO_TRACKER.md) and the current task queue (`data/tasks.json`).
+1. Loads context from [context/AGENT_SEO_CONTEXT.md](context/AGENT_SEO_CONTEXT.md) + [context/SEO_TRACKER.md](context/SEO_TRACKER.md) and the current task queue (`/app/data/tasks.json` on the Fly volume).
 2. Pulls last-28-day GSC data for `z-domicile.fr` via the SDK-native GSC tools.
-3. Writes `data/reports/YYYY-MM-DD.md` with three ranked lists (quick-win pages, low-CTR pages, rising untargeted queries).
-4. **Generates new tasks** from today's findings (meta rewrites, content enrichments, internal linking, new page creations from Phase 2 roadmap, investigations). Dedup by `dedup_key` means re-running the same analysis doesn't flood the queue.
+3. Writes `data/reports/YYYY-MM-DD.md` to the volume.
+4. **Generates new tasks** from today's findings. Dedup by `dedup_key` means re-running doesn't flood the queue.
 5. **Executes the highest-priority open tasks** (default 3 per run, configurable via `MAX_TASKS_PER_RUN`). Commits directly to the frontend repo, flips the tracker when relevant, marks each task `done` (or `blocked` if it can't).
 6. Sends a Telegram summary with task stats + what was executed.
-7. The workflow then commits the updated `data/` (tasks queue + report) back to this repo so state persists across weekly runs.
 
-The task queue is the agent's persistent work memory: analysis fills it, execution drains it.
+The task queue is the agent's persistent work memory: analysis fills it, execution drains it. State lives on the Fly volume so it survives across weekly runs.
 
 ## Setup
 
-### 1. Install
+### 1. Install (local dev)
 
 ```bash
 cd seo-agent
@@ -47,11 +48,11 @@ Generate a fine-grained personal access token scoped to the **frontend repo only
 - Repository access: only `<owner>/<repo>` (the Z-Domicile Angular frontend).
 - Permissions: **Contents: Read and write**, **Metadata: Read**.
 
-Set `GITHUB_TOKEN`, `GITHUB_OWNER`, `GITHUB_REPO` in `.env` (local) or as secrets (GitHub Actions, see below).
+Set `GITHUB_TOKEN`, `GITHUB_OWNER`, `GITHUB_REPO` in `.env` (local) or as Fly secrets (production).
 
 ### 4. Telegram (optional but recommended)
 
-Create a bot via [@BotFather](https://t.me/BotFather), grab the token, start a chat with it, and get your chat ID from `https://api.telegram.org/bot<TOKEN>/getUpdates`. Put both in `.env`.
+Create a bot via [@BotFather](https://t.me/BotFather), grab the token, start a chat with it, and get your chat ID from `https://api.telegram.org/bot<TOKEN>/getUpdates`. Put both in `.env` / Fly secrets.
 
 ## Run locally
 
@@ -69,46 +70,75 @@ After a run, verify:
 - Telegram message arrived with task stats + executed-task lines.
 - If the executed task was `create_seo_page` or a code edit: a new commit on the frontend repo.
 
-## Deploy: GitHub Actions (weekly)
+## Deploy: Fly.io app
 
-The workflow lives at [.github/workflows/seo-agent.yml](.github/workflows/seo-agent.yml). It runs every **Monday 08:00 UTC** and can also be triggered manually from the Actions tab.
+One-time setup of the Fly app + volume + secrets:
+
+```bash
+fly launch --no-deploy
+fly volumes create seo_data --size 1 --region cdg
+
+fly secrets set \
+  ANTHROPIC_API_KEY=sk-ant-... \
+  CLAUDE_MODEL=claude-opus-4-7 \
+  GOOGLE_CLIENT_ID=... \
+  GOOGLE_CLIENT_SECRET=... \
+  GSC_REFRESH_TOKEN=... \
+  GSC_SITE_URL=https://www.z-domicile.fr/ \
+  GITHUB_TOKEN=ghp_... \
+  GITHUB_OWNER=ARMDAMIEN \
+  GITHUB_REPO=ANGULAR-ZH \
+  GITHUB_BASE_BRANCH=master \
+  MAX_TASKS_PER_RUN=3 \
+  TELEGRAM_BOT_API_KEY=... \
+  TELEGRAM_CHAT_ID=...
+
+# Build & push the initial image (CI will keep it fresh after this).
+fly deploy --build-only --push --remote-only
+```
+
+### (Optional) Seed the volume with existing task queue
+
+The Fly volume starts empty. If you have a local `data/tasks.json` you want to bootstrap with (e.g. tasks already discovered locally), copy it into the volume **after a first deploy**:
+
+```bash
+# Run any one-shot machine just to materialise the volume mount.
+flyctl machine run registry.fly.io/z-domicile-seo-agent:latest \
+  --app z-domicile-seo-agent --region cdg \
+  --volume seo_data:/app/data --rm
+
+# Then SFTP the seed file in.
+fly ssh sftp shell --app z-domicile-seo-agent
+sftp> put data/tasks.json /app/data/tasks.json
+sftp> quit
+```
+
+Otherwise the agent rebuilds the queue from GSC on its first run.
+
+After this, the GitHub Actions workflow handles both rebuilds (on `main` push) and weekly runs (Monday 08:00 UTC).
+
+## Schedule: GitHub Actions
+
+The workflow lives at [.github/workflows/seo-agent.yml](.github/workflows/seo-agent.yml). Two jobs:
+
+- **`deploy`** — runs on push to `main` touching `src/`, `context/`, `Dockerfile`, `fly.toml`, etc. Rebuilds + pushes the image to Fly's registry.
+- **`run`** — runs on the weekly cron (`0 8 * * 1` = Monday 08:00 UTC). Spawns a one-shot Fly machine via `flyctl machine run --rm` that mounts the `seo_data` volume, runs the agent, and is auto-removed on exit.
+
+`workflow_dispatch` exposes a `mode` input (`run` / `deploy` / `deploy-run`) for manual triggers.
 
 ### Repository secrets
 
-Set these under **Settings → Secrets and variables → Actions → Secrets**:
+Set under **Settings → Secrets and variables → Actions → Secrets**:
 
 | Secret | What |
 |---|---|
-| `ANTHROPIC_API_KEY` | `sk-ant-...` |
-| `GOOGLE_CLIENT_ID` | OAuth Desktop client id |
-| `GOOGLE_CLIENT_SECRET` | OAuth Desktop client secret |
-| `GSC_REFRESH_TOKEN` | from `npm run gsc:token` |
-| `FRONTEND_GITHUB_TOKEN` | fine-grained PAT scoped to the **frontend** repo (mapped into the agent as `GITHUB_TOKEN`) |
-| `TELEGRAM_BOT_API_KEY` | optional |
-| `TELEGRAM_CHAT_ID` | optional |
+| `FLY_API_TOKEN` | from `fly tokens create deploy` (scoped to the app) |
 
-### Repository variables
-
-Under **Settings → Secrets and variables → Actions → Variables**:
-
-| Variable | Default | Notes |
-|---|---|---|
-| `GSC_SITE_URL` | `https://www.z-domicile.fr/` | |
-| `FRONTEND_GITHUB_OWNER` | — | e.g. `ARMDAMIEN` |
-| `FRONTEND_GITHUB_REPO` | — | e.g. `ANGULAR-ZH` |
-| `FRONTEND_GITHUB_BASE_BRANCH` | `master` | branch on the frontend repo to commit to |
-| `MAX_TASKS_PER_RUN` | `3` | tasks executed per weekly run |
-| `CLAUDE_MODEL` | `claude-opus-4-7` | |
-
-### State persistence
-
-The workflow checks out this repo, runs the agent, then commits `data/tasks.json` + `data/reports/` back. That's how the task queue (the agent's memory) survives across runs. The commit-back is skipped when nothing changed.
-
-The frontend PAT is **distinct** from the Actions-built-in `GITHUB_TOKEN`: the built-in token is used to commit state back to *this* repo; `FRONTEND_GITHUB_TOKEN` is what the agent uses to commit SEO changes to the *frontend* repo.
+That's it for the workflow — all other secrets (Anthropic, Google, GitHub PAT, Telegram) are stored as **Fly secrets** and injected into the machine at runtime by Fly.
 
 ## Environment variables
 
-See [.env.example](.env.example). Required: `ANTHROPIC_API_KEY`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `GSC_REFRESH_TOKEN`, `GSC_SITE_URL`, `GITHUB_TOKEN`, `GITHUB_OWNER`, `GITHUB_REPO`. Optional: `CLAUDE_MODEL` (default `claude-opus-4-7`), `GITHUB_BASE_BRANCH` (default `main`), `MAX_TASKS_PER_RUN` (default `1` locally, `3` in CI), `TELEGRAM_*`.
+See [.env.example](.env.example). Required: `ANTHROPIC_API_KEY`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `GSC_REFRESH_TOKEN`, `GSC_SITE_URL`, `GITHUB_TOKEN`, `GITHUB_OWNER`, `GITHUB_REPO`. Optional: `CLAUDE_MODEL` (default `claude-opus-4-7`), `GITHUB_BASE_BRANCH` (default `main`), `MAX_TASKS_PER_RUN` (default `1` locally, `3` in prod), `TELEGRAM_*`.
 
 ## Tools available to the agent
 
@@ -132,3 +162,4 @@ SDK-native tools bundled as `mcp__seo_state__*` ([src/tools/](src/tools/)):
 - **Direct commit to the frontend `main`** — no PR gate. The frontend repo's CI/CD deploys the change. Limit the GitHub PAT to that repo only.
 - **Weekly cadence.** SEO signals don't move daily; running once a week saves tokens and avoids analysis churn. Bump `MAX_TASKS_PER_RUN` to drain the backlog faster.
 - **Idempotent analysis.** Task dedup by `dedup_key` means re-running doesn't create duplicate work items.
+- **One-shot Fly machines.** `--rm` on `flyctl machine run` cleans the machine after exit; the volume persists independently.
