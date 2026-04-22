@@ -33,13 +33,11 @@ concurrency:
 
 env:
   FLY_APP: z-domicile-seo-agent
-  FLY_REGION: cdg
-  FLY_VOLUME: seo_data
   FLY_IMAGE: registry.fly.io/z-domicile-seo-agent:latest
 
 jobs:
   deploy:
-    name: Build & push image to Fly
+    name: Build & push image, update machine
     if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && (inputs.mode == 'deploy' || inputs.mode == 'deploy-run'))
     runs-on: ubuntu-latest
     timeout-minutes: 20
@@ -50,9 +48,20 @@ jobs:
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
         run: flyctl deploy --build-only --push --remote-only --app "$FLY_APP"
+      - name: Update existing machine to new image
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+        run: |
+          ID=$(flyctl machines list --app "$FLY_APP" --json | jq -r '[.[] | select(.config.mounts != null)][0].id')
+          if [ -z "$ID" ] || [ "$ID" = "null" ]; then
+            echo "::error::No volume-attached machine found on $FLY_APP. Run 'fly deploy' once locally to bootstrap."
+            exit 1
+          fi
+          echo "Updating machine $ID → $FLY_IMAGE"
+          flyctl machine update "$ID" --image "$FLY_IMAGE" --app "$FLY_APP" --yes
 
   run:
-    name: Spawn one-shot Fly machine
+    name: Wake Fly machine for weekly run
     needs: [deploy]
     # `always()` lets this job run even when `deploy` is skipped (cron / mode=run).
     # We still want to bail if `deploy` actually failed.
@@ -64,12 +73,27 @@ jobs:
     timeout-minutes: 35
     steps:
       - uses: superfly/flyctl-actions/setup-flyctl@master
-      - name: Run agent on Fly
+      - name: Start machine and wait for it to exit
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
         run: |
-          flyctl machine run "$FLY_IMAGE" \
-            --app "$FLY_APP" \
-            --region "$FLY_REGION" \
-            --volume "${FLY_VOLUME}:/app/data" \
-            --rm
+          ID=$(flyctl machines list --app "$FLY_APP" --json | jq -r '[.[] | select(.config.mounts != null)][0].id')
+          if [ -z "$ID" ] || [ "$ID" = "null" ]; then
+            echo "::error::No volume-attached machine found on $FLY_APP."
+            exit 1
+          fi
+          echo "Starting machine $ID"
+          flyctl machine start "$ID" --app "$FLY_APP"
+
+          # Poll until the machine exits (CMD finished). Cap at ~30 minutes.
+          for i in $(seq 1 120); do
+            STATE=$(flyctl machine status "$ID" --app "$FLY_APP" --json | jq -r '.state')
+            echo "[$(date -u +%H:%M:%S)] machine state: $STATE"
+            if [ "$STATE" = "stopped" ]; then
+              echo "Machine exited cleanly."
+              exit 0
+            fi
+            sleep 15
+          done
+          echo "::error::Machine still running after 30 min — check 'fly logs --app $FLY_APP'"
+          exit 1
