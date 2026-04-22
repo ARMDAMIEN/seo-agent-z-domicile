@@ -47,7 +47,9 @@ jobs:
       - name: Build & push image
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
-        run: flyctl deploy --build-only --push --remote-only --app "$FLY_APP"
+        # `--image-label latest` overrides the default `deployment-{ts}` tag so
+        # the next step (and the README seed flow) can reference :latest.
+        run: flyctl deploy --build-only --push --remote-only --image-label latest --app "$FLY_APP"
       - name: Update existing machine to new image
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
