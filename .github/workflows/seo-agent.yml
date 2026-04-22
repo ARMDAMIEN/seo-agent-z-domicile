@@ -88,9 +88,11 @@ jobs:
           flyctl machine start "$ID" --app "$FLY_APP"
 
           # Poll until the machine exits (CMD finished). Cap at ~30 minutes.
+          # `fly machine status` has no --json flag; use `machines list --json` and filter.
           for i in $(seq 1 120); do
-            STATE=$(flyctl machine status "$ID" --app "$FLY_APP" --json | jq -r '.state')
-            echo "[$(date -u +%H:%M:%S)] machine state: $STATE"
+            STATE=$(flyctl machines list --app "$FLY_APP" --json \
+              | jq -r --arg id "$ID" '.[] | select(.id == $id) | .state')
+            echo "[$(date -u +%H:%M:%S)] machine state: ${STATE:-<unknown>}"
             if [ "$STATE" = "stopped" ]; then
               echo "Machine exited cleanly."
               exit 0
