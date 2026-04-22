@@ -1,0 +1,72 @@
+name: SEO Agent (weekly)
+
+on:
+  schedule:
+    # Every Monday at 08:00 UTC
+    - cron: "0 8 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: seo-agent
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+          fetch-depth: 1
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run SEO agent
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          CLAUDE_MODEL: ${{ vars.CLAUDE_MODEL || 'claude-opus-4-7' }}
+
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          GSC_REFRESH_TOKEN: ${{ secrets.GSC_REFRESH_TOKEN }}
+          GSC_SITE_URL: ${{ vars.GSC_SITE_URL || 'https://www.z-domicile.fr/' }}
+
+          # The agent commits SEO changes to the FRONTEND repo, using a dedicated PAT.
+          # We deliberately do NOT use the workflow's built-in GITHUB_TOKEN here.
+          GITHUB_TOKEN: ${{ secrets.FRONTEND_GITHUB_TOKEN }}
+          GITHUB_OWNER: ${{ vars.FRONTEND_GITHUB_OWNER }}
+          GITHUB_REPO: ${{ vars.FRONTEND_GITHUB_REPO }}
+          GITHUB_BASE_BRANCH: ${{ vars.FRONTEND_GITHUB_BASE_BRANCH || 'master' }}
+
+          MAX_TASKS_PER_RUN: ${{ vars.MAX_TASKS_PER_RUN || '3' }}
+          RECENT_DONE_COOLDOWN_DAYS: ${{ vars.RECENT_DONE_COOLDOWN_DAYS || '14' }}
+
+          TELEGRAM_BOT_API_KEY: ${{ secrets.TELEGRAM_BOT_API_KEY }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: npm start
+
+      - name: Commit updated agent state
+        if: always()
+        run: |
+          git config user.name "seo-agent[bot]"
+          git config user.email "seo-agent@users.noreply.github.com"
+          git add data/tasks.json data/reports || true
+          if git diff --staged --quiet; then
+            echo "No state changes to commit."
+          else
+            git commit -m "chore(state): update tasks queue + report ($(date -u +%Y-%m-%d)) [skip ci]"
+            git push
+          fi
