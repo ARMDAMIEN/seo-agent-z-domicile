@@ -17,7 +17,7 @@ import { SYSTEM_PROMPT } from "./prompt.js";
 import { getSeoContext } from "./tools/getSeoContext.js";
 import { saveSeoReport } from "./tools/saveSeoReport.js";
 import { updateSeoTracker } from "./tools/updateSeoTracker.js";
-import { sendTelegramReport, type TelegramReportInput } from "./tools/sendTelegramReport.js";
+import { sendTelegramReport, sendFatalAlert, type TelegramReportInput } from "./tools/sendTelegramReport.js";
 import {
   queryGscSearchAnalytics,
   listGscSites,
@@ -457,13 +457,26 @@ async function main() {
       if (message.subtype === "success") {
         console.log(`\n✅ Done. Cost: $${message.total_cost_usd?.toFixed(4) ?? "?"}`);
       } else {
-        console.error(`\n❌ Agent failed:`, (message as any).errors);
+        // SDK surfaced a non-success result. Treat as fatal so the catch below
+        // can classify + Telegram-alert in one place.
+        const errs = (message as any).errors ?? (message as any).error ?? "agent returned non-success result";
+        throw new Error(typeof errs === "string" ? errs : JSON.stringify(errs));
       }
     }
   }
 }
 
-main().catch((err) => {
+main().catch(async (err) => {
   console.error("Fatal error:", err);
+  try {
+    const res = await sendFatalAlert(err, {
+      agent: "seo-agent",
+      date_iso: TODAY_ISO,
+      run_id: RUN_ID,
+    });
+    if (!res.ok) console.error("Telegram alert failed:", res.error);
+  } catch (alertErr) {
+    console.error("Telegram alert threw:", alertErr);
+  }
   process.exit(1);
 });

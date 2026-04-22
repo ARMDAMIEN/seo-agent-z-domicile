@@ -119,8 +119,9 @@ export function formatReport(input: TelegramReportInput): string {
   return lines.join("\n");
 }
 
-export async function sendTelegramReport(
-  input: TelegramReportInput
+export async function sendTelegramRaw(
+  text: string,
+  opts: { parseMode?: "MarkdownV2" | "HTML" | null } = {}
 ): Promise<{ ok: boolean; message_id: number | null; error?: string }> {
   if (!TELEGRAM_BOT_API_KEY || !TELEGRAM_CHAT_ID) {
     return {
@@ -129,18 +130,19 @@ export async function sendTelegramReport(
       error: "TELEGRAM_BOT_API_KEY or TELEGRAM_CHAT_ID not set",
     };
   }
-  const text = formatReport(input);
+  const body: Record<string, unknown> = {
+    chat_id: TELEGRAM_CHAT_ID,
+    text,
+    disable_web_page_preview: true,
+  };
+  if (opts.parseMode) body.parse_mode = opts.parseMode;
+
   const res = await fetch(
     `https://api.telegram.org/bot${TELEGRAM_BOT_API_KEY}/sendMessage`,
     {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        chat_id: TELEGRAM_CHAT_ID,
-        text,
-        parse_mode: "MarkdownV2",
-        disable_web_page_preview: true,
-      }),
+      body: JSON.stringify(body),
       signal: AbortSignal.timeout(20000),
     }
   );
@@ -153,4 +155,52 @@ export async function sendTelegramReport(
     };
   }
   return { ok: true, message_id: data.result?.message_id ?? null };
+}
+
+export async function sendTelegramReport(
+  input: TelegramReportInput
+): Promise<{ ok: boolean; message_id: number | null; error?: string }> {
+  return sendTelegramRaw(formatReport(input), { parseMode: "MarkdownV2" });
+}
+
+export type FatalErrorKind = "billing" | "auth" | "rate_limit" | "unknown";
+
+export function classifyFatalError(err: unknown): FatalErrorKind {
+  const msg = String((err as any)?.message ?? err ?? "").toLowerCase();
+  if (/credit balance is too low|insufficient.*credit|billing|payment/.test(msg)) return "billing";
+  if (/invalid.*api.?key|unauthorized|authentication.*fail|\b401\b/.test(msg)) return "auth";
+  if (/rate.?limit|\b429\b|too many requests|overloaded/.test(msg)) return "rate_limit";
+  return "unknown";
+}
+
+export async function sendFatalAlert(
+  err: unknown,
+  ctx: { agent: string; date_iso: string; run_id: string }
+): Promise<{ ok: boolean; error?: string }> {
+  const kind = classifyFatalError(err);
+  const errMsg = String((err as any)?.message ?? err ?? "(no message)");
+
+  const header: Record<FatalErrorKind, string> = {
+    billing: "💸 Anthropic credit balance too low",
+    auth: "🔑 Anthropic auth failure (invalid API key?)",
+    rate_limit: "⏳ Rate-limited / overloaded by Anthropic",
+    unknown: "💥 Unexpected fatal error",
+  };
+  const hint: Record<FatalErrorKind, string> = {
+    billing: "→ top up: https://console.anthropic.com/settings/billing",
+    auth: "→ rotate ANTHROPIC_API_KEY in `fly secrets set`",
+    rate_limit: "→ retry next run; consider lowering MAX_TASKS_PER_RUN",
+    unknown: "→ check `fly logs --app z-domicile-seo-agent`",
+  };
+
+  const lines = [
+    `🚨 ${ctx.agent} CRASHED — ${ctx.date_iso} (${ctx.run_id})`,
+    "",
+    header[kind],
+    hint[kind],
+    "",
+    `Error: ${errMsg.slice(0, 600)}`,
+  ];
+  // Plain text — no escaping required, robust against weird error payloads.
+  return sendTelegramRaw(lines.join("\n"), { parseMode: null });
 }
