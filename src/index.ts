@@ -69,6 +69,7 @@ const saveSeoReportTool = tool(
     console.log(`  📝 save_seo_report: ${args.date_iso}`);
     try {
       const res = await saveSeoReport(args);
+      console.log(`    → ${res.bytes}B, committed=${res.committed}${res.commit_error ? ` (${res.commit_error})` : ""}`);
       return { content: [{ type: "text" as const, text: JSON.stringify(res) }] };
     } catch (err) {
       return { content: [{ type: "text" as const, text: `save_seo_report failed: ${err}` }], isError: true };

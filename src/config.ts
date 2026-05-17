@@ -17,6 +17,12 @@ export const GITHUB_OWNER = process.env.GITHUB_OWNER ?? "";
 export const GITHUB_REPO = process.env.GITHUB_REPO ?? "";
 export const GITHUB_BASE_BRANCH = process.env.GITHUB_BASE_BRANCH ?? "main";
 
+// Where the daily report is mirrored so it's accessible via `git pull` (the
+// `data/` dir is gitignored locally, but API-pushed files still land in the
+// remote repo). Defaults to this agent's own repo.
+export const REPORTS_GITHUB_OWNER = process.env.REPORTS_GITHUB_OWNER ?? "ARMDAMIEN";
+export const REPORTS_GITHUB_REPO = process.env.REPORTS_GITHUB_REPO ?? "seo-agent-z-domicile";
+
 // Agent tuning
 export const MAX_TASKS_PER_RUN = Number(process.env.MAX_TASKS_PER_RUN ?? 1);
 

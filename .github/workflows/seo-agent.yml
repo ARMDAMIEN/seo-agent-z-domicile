@@ -2,8 +2,8 @@ name: SEO Agent
 
 on:
   schedule:
-    # Every Monday at 08:00 UTC — triggers the Fly machine.
-    - cron: "0 8 * * 1"
+    # Every Sunday at 08:00 UTC (10:00 France CEST) — triggers the Fly machine.
+    - cron: "0 8 * * 0"
   push:
     branches: [main]
     paths:
