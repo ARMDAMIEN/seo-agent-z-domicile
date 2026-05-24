@@ -22,6 +22,10 @@ export const GITHUB_BASE_BRANCH = process.env.GITHUB_BASE_BRANCH ?? "main";
 // remote repo). Defaults to this agent's own repo.
 export const REPORTS_GITHUB_OWNER = process.env.REPORTS_GITHUB_OWNER ?? "ARMDAMIEN";
 export const REPORTS_GITHUB_REPO = process.env.REPORTS_GITHUB_REPO ?? "seo-agent-z-domicile";
+// The reports repo has its own default branch (`main`), distinct from the
+// frontend repo's `master` (GITHUB_BASE_BRANCH). Reusing GITHUB_BASE_BRANCH
+// here makes the mirror PUT to a non-existent `master` branch → 404.
+export const REPORTS_GITHUB_BRANCH = process.env.REPORTS_GITHUB_BRANCH ?? "main";
 
 // Agent tuning
 export const MAX_TASKS_PER_RUN = Number(process.env.MAX_TASKS_PER_RUN ?? 1);

@@ -3,9 +3,9 @@ import { resolve } from "node:path";
 import {
   REPORTS_DIR,
   GITHUB_TOKEN,
-  GITHUB_BASE_BRANCH,
   REPORTS_GITHUB_OWNER,
   REPORTS_GITHUB_REPO,
+  REPORTS_GITHUB_BRANCH,
 } from "../config.js";
 
 export interface SaveReportInput {
@@ -55,7 +55,7 @@ async function mirrorReportToGitHub(date_iso: string, markdown: string): Promise
 
   // GitHub's PUT contents API needs the current blob `sha` to update an existing file.
   let sha: string | undefined;
-  const head = await fetch(`${apiBase}?ref=${GITHUB_BASE_BRANCH}`, { headers });
+  const head = await fetch(`${apiBase}?ref=${REPORTS_GITHUB_BRANCH}`, { headers });
   if (head.ok) {
     const json = (await head.json()) as { sha?: string };
     sha = json.sha;
@@ -69,7 +69,7 @@ async function mirrorReportToGitHub(date_iso: string, markdown: string): Promise
     body: JSON.stringify({
       message: `chore(report): ${date_iso}`,
       content: Buffer.from(markdown, "utf8").toString("base64"),
-      branch: GITHUB_BASE_BRANCH,
+      branch: REPORTS_GITHUB_BRANCH,
       ...(sha ? { sha } : {}),
     }),
   });
