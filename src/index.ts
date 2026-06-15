@@ -405,8 +405,11 @@ const gscServer = createSdkMcpServer({
 const externalMcpServers: Record<string, any> = {
   github: {
     type: "stdio",
-    command: "npx",
-    args: ["-y", "@modelcontextprotocol/server-github"],
+    // Baked into the image via package.json (not fetched at runtime) so the
+    // server registers deterministically — no npx cold-fetch race that
+    // silently drops mcp__github__* tools. See node_modules/.../dist/index.js.
+    command: "node",
+    args: ["node_modules/@modelcontextprotocol/server-github/dist/index.js"],
     env: { GITHUB_PERSONAL_ACCESS_TOKEN: GITHUB_TOKEN },
   },
 };
