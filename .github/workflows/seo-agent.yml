@@ -1,9 +1,13 @@
 name: SEO Agent
 
 on:
-  schedule:
-    # Every Sunday at 08:00 UTC (10:00 France CEST) — triggers the Fly machine.
-    - cron: "0 8 * * 0"
+  # PAUSED 2026-08-19 - migrating this agent to a Claude Code routine
+  # (subscription-based) instead of the metered Anthropic API. The deploy path
+  # below is intact: use `workflow_dispatch` for a manual deploy/run, and
+  # re-enable the weekly cron by uncommenting the `schedule:` block.
+  # schedule:
+  #   # Every Sunday at 08:00 UTC (10:00 France CEST) — triggers the Fly machine.
+  #   - cron: "0 8 * * 0"
   push:
     branches: [main]
     paths:
