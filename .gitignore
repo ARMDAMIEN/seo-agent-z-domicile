@@ -2,4 +2,11 @@ node_modules/
 dist/
 .env
 data/
+# …but the task queue is the seam between the analyst and operator routines.
+# A cloud routine has no local filesystem — it only sees what is committed here,
+# so tasks.json must be tracked or the queue does not survive between runs.
+!data/
+data/*
+!data/tasks.json
+!data/reports/
 *.log
