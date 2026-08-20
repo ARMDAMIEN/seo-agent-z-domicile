@@ -156,17 +156,22 @@
     "title": "Rewrite meta for /manucure-domicile-paris",
     "description": "CRITICAL: Position 5.3 on 'manucure domicile' (6 imp) and 8.8 on 'manucure à domicile' (8 imp), but 0 clicks across all queries. Excellent positions wasted by poor CTR. Suggested Title='Manucure à Domicile Paris | Réservation en Ligne dès 30€' Description='Réservez votre manucure à domicile à Paris. Ongles gel, semi-permanent, pose complète. Professionnelles diplômées dans votre arrondissement. Réservation instantanée.'",
     "priority": "critical",
-    "status": "in_review",
+    "status": "done",
     "dedup_key": "meta_rewrite:/manucure-domicile-paris",
     "target_url": "/manucure-domicile-paris",
     "status_updated_at": "2026-08-20",
+    "completed_at": "2026-08-20T00:00:00Z",
     "completed_by_run": "2026-08-20",
-    "commit_sha": "29464ef",
-    "notes": "PR #129 ouverte (en attente de merge — le correctif n'est PAS encore en production). Meta title et description mis à jour dans manucure-paris.component.ts via SeoService.updateMetaTags(). Nouveau title: 'Manucure à Domicile Paris | Réservation en Ligne dès 45€'. Nouvelle description centrée sur verbe d'action + réservation instantanée. Deux écarts vs suggestion, tous deux motivés par la règle 'pas de données inventées' : prix plancher maintenu à 45€ (cohérent avec H1 et FAQ on-page, pas 30€) et 'prothésistes vérifiées' (pas 'diplômées', cohérent avec la FAQ).",
+    "commit_sha": "1ceff5e460d3cbea7118bd59480f66a12b2dcb0e",
+    "commit_urls": [
+      "https://github.com/ARMDAMIEN/ANGULAR-ZH/commit/1ceff5e460d3cbea7118bd59480f66a12b2dcb0e"
+    ],
+    "notes": "PR #129 relue et mergée en squash sur master (SHA 1ceff5e). Meta title et description désormais en production dans manucure-paris.component.ts via SeoService.updateMetaTags(). Nouveau title (55 car.) : 'Manucure à Domicile Paris | Réservation en Ligne dès 45€'. Nouvelle description (155 car.) : verbe d'action 'Réservez' + services (gel/semi-permanent/pose complète) + 'prothésistes vérifiées' + 'réservation instantanée'. Chaque fait vérifié comme déjà présent dans le dépôt : 45€ (FAQ/pricing), gel/semi-permanent/pose complète (HTML), prothésistes vérifiées (composant + HTML), réservation instantanée (AGENT_SEO_CONTEXT.md template). Deux écarts vs suggestion opérateur assumés (45€ vs 30€ ; 'vérifiées' vs 'diplômées') pour rester cohérent avec le contenu on-page. tsc n'a pas pu tourner (node_modules absents dans l'environnement + tsconfig moduleResolution=node10 déprécié), relecture manuelle du diff : 2 lignes de chaînes littérales sans apostrophe interne, aucun risque de syntaxe.",
     "blocked_reason": null,
     "pr_url": "https://github.com/ARMDAMIEN/ANGULAR-ZH/pull/129",
     "pr_number": 129,
-    "submitted_at": "2026-08-20T15:42:00Z"
+    "submitted_at": "2026-08-20T15:42:00Z",
+    "merged_at": "2026-08-20T00:00:00Z"
   },
   {
     "id": "task_20260420124524_nci4h1",
