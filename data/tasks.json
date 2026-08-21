@@ -271,7 +271,7 @@
     "title": "3 local pages 'unknown to Google' despite sitemap presence",
     "description": "gsc_inspect_url (checked 2026-08-19) returns index_status='URL is unknown to Google' for /coach-sportif-a-domicile-paris, /estheticienne-a-domicile-lyon and /estheticienne-a-domicile-bordeaux — none have ever been crawled by Googlebot. All 3 ARE present in ANGULAR-ZH's sitemap.xml (verified). /coach-sportif-a-domicile-paris and /estheticienne-a-domicile-lyon have inbound internal routerLinks (home.component.html, coiffeuse-paris, coiffeur-lyon, estheticienne-bordeaux footer); /estheticienne-a-domicile-bordeaux has NO inbound internal link found in src/ — it is an orphan page. /coach-sportif-a-domicile-paris is marked ✅ Fait in SEO_TRACKER.md since 06/04/2026, meaning a page recorded as shipped has generated 0 organic impressions for over 4 months because Google never crawled it. Cannot fix directly without server-side access: needs a human/operator to (1) check GSC 'Sitemaps' report for submission/processing errors, (2) verify SSR actually renders these 3 routes with real HTML (curl the prerendered output, not just the Angular dev server), (3) add an internal link to /estheticienne-a-domicile-bordeaux from home or a related page, (4) consider manually requesting indexing via GSC URL Inspection once cause is fixed. 0 GSC impressions on all 3 URLs over the 2026-07-20 to 2026-08-16 window, consistent with never being crawled.",
     "priority": "critical",
-    "status": "todo",
+    "status": "in_progress",
     "dedup_key": "investigation:pages-unknown-a-google",
     "target_url": null,
     "completed_at": null,
@@ -279,7 +279,8 @@
     "commit_sha": null,
     "commit_urls": null,
     "notes": null,
-    "blocked_reason": null
+    "blocked_reason": null,
+    "status_updated_at": "2026-08-21"
   },
   {
     "id": "task_20260819172835_b5ndat",
