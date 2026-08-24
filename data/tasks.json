@@ -203,19 +203,22 @@
     "title": "Enrich /search-pro with B2C sections",
     "description": "Quick-win: position 10.8-12.0 on 'professionnel à domicile' (40 impressions), near top 10. Transform from generic search form into B2C landing page. Add: (1) 'Nos professionnels les plus demandés' section with cards linking to /coiffeuse-domicile-paris, /estheticienne-a-domicile-paris, /coach-sportif-a-domicile-paris, /manucure-domicile-paris (2) 'Comment ça marche' 3-step process (3) Trust signals ('Pros vérifiés', 'Réservation instantanée').",
     "priority": "high",
-    "status": "in_review",
+    "status": "done",
     "dedup_key": "content_enrichment:/search-pro",
     "target_url": "/search-pro",
-    "completed_at": null,
-    "completed_by_run": null,
-    "commit_sha": null,
-    "commit_urls": null,
-    "notes": "PR #130 ouverte sur la branche seo/content-enrichment-search-pro. Ajout d'un bloc B2C dans search-pro.component.html (+ getter showIntro dans le .ts, styles dans le .css) : 4 cartes de services liant /coiffeuse-domicile-paris, /estheticienne-a-domicile-paris, /coach-sportif-a-domicile-paris et /manucure-domicile-paris, un 'Comment ca marche' en 3 etapes (Choisir/Reserver/Recevoir, conforme au template AGENT_SEO_CONTEXT.md §5), 4 signaux de reassurance et un paragraphe de maillage Lyon/Bordeaux — soit 7 liens internes sur une page qui n'en avait aucun. Le bloc ne s'affiche que sur l'etat initial (aucune recherche lancee), etat que capture le prerender ; il disparait des qu'une recherche part.\n\nVERIFIE (node_modules installables cette fois, contrairement aux runs precedents) : build production OK avec 'Prerendered 12 static routes' ; contenu confirme present dans le HTML prerendu dist/angular-zh/browser/search-pro/index.html (2 h2 + 7 liens) ; rendu Chromium 1440x900 et 390x844 sans erreur JS ; non-regression de l'etat 'recherche lancee' verifiee au DOM. Un bug reel a ete trouve et corrige avant le push : sur mobile, html/body sont en overflow:hidden (styles.css l.81-85) donc le bloc depassait l'ecran sans etre atteignable — c'est desormais .search-pro-page.has-intro qui porte le defilement.\n\nDEUX ECARTS ASSUMES vs la description de la tache : (1) section intitulee 'Nos services a domicile' et non 'Nos professionnels les plus demandes', 'les plus demandes' etant une affirmation de popularite non etayee (regle 7) ; (2) aucun prix ajoute. Toutes les affirmations du bloc sont reprises de contenu deja present dans le depot (tableau de correspondance dans le corps de la PR).\n\nPREMISSE GSC PERIMEE, SIGNALEE DANS LA PR : la tache citait 'position 10.8-12.0, 40 impressions, near top 10' ; GSC 28j (2026-07-25 -> 2026-08-21) mesure desormais 3 impressions, position 36.67, 0 clic. La page a recule. Le travail reste pertinent (la page n'avait aucun contenu indexable ni lien interne) mais l'objectif realiste n'est plus 'passer en top 10'.",
-    "blocked_reason": null,
+    "completed_at": "2026-08-24T02:20:00Z",
+    "completed_by_run": "2026-08-24-review",
+    "commit_sha": "411204ff58d0de350740457df83cc29566fc58ff",
+    "commit_urls": [
+      "https://github.com/ARMDAMIEN/ANGULAR-ZH/pull/130"
+    ],
+    "notes": "MERGEE (squash 411204f) apres relecture. Parti en production sur /search-pro : un bloc B2C affiche sur l'etat initial de la page (4 cartes de services vers /coiffeuse-domicile-paris, /estheticienne-a-domicile-paris, /coach-sportif-a-domicile-paris et /manucure-domicile-paris ; un 'Comment ca marche' en 3 etapes ; 4 signaux de reassurance ; un paragraphe de maillage vers Lyon, Bordeaux et la maquilleuse Paris) — soit 7 liens internes sur une page qui n'en avait aucun.\n\nVERIFICATIONS DU RELECTEUR (toutes reellement executees) : npm ci + npm run build production OK, 'Prerendered 12 static routes', aucune erreur ; le HTML prerendu dist/angular-zh/browser/search-pro/index.html contient bien les 2 h2 et les 7 liens internes (donc le contenu est visible de Googlebot) ; les 7 cibles routerLink correspondent a des routes reellement enregistrees dans app-routing.module.ts ; RouterModule bien expose via AppRoutingModule ; balises HTML equilibrees (controle automatise) ; le warning 'bundle initial exceeded maximum budget' existe deja sur master (97 kB de depassement avant la PR, 104 kB apres) — pre-existant, non bloquant.\n\nDONNEES INVENTEES : aucune. Chaque affirmation factuelle du bloc a ete tracee a du contenu deja present dans le depot — 'Annulation gratuite jusqu'a 24h avant' est verbatim dans 5 fichiers (home, coiffeuse-paris, coiffeur-lyon, coiffeur-bordeaux, coach-sportif-paris) ; 'Vous ne payez qu'apres la prestation' est verbatim dans home.component.html:407 ; 'Professionnels Verifies' dans home.component.html:355 ; les descriptions de prestations reprennent celles des pages cibles. Aucun prix, aucun avis, aucune note, aucun nombre de clients, aucun temoignage introduit.\n\nINDEXATION NON DEMANDEE : l'environnement de cette execution bloque l'egress vers www.z-domicile.fr (proxy: 403 au CONNECT), le code HTTP de https://www.z-domicile.fr/search-pro n'a donc PAS pu etre verifie. Conformement a la regle 'jamais d'indexation sur une URL non verifiee en 200', la demande d'indexation reste A FAIRE pour https://www.z-domicile.fr/search-pro.\n\nNETTOYAGE RESTANT : la branche distante seo/content-enrichment-search-pro n'a pas pu etre supprimee (push bloque par le proxy). Cosmetique — la PR etant mergee, la garde anti-doublon de l'operateur n'est pas bloquee.\n\nPREMISSE GSC PERIMEE (signalee par l'operateur, confirmee ici comme non bloquante) : la tache visait 'position 10.8-12.0, 40 impressions'. Le travail reste pertinent (la page n'avait aucun contenu indexable ni lien interne) mais l'objectif 'passer en top 10' n'est plus realiste a court terme.",
     "status_updated_at": "2026-08-24",
     "pr_url": "https://github.com/ARMDAMIEN/ANGULAR-ZH/pull/130",
     "pr_number": 130,
-    "submitted_at": "2026-08-24T00:00:00Z"
+    "submitted_at": "2026-08-24T00:00:00Z",
+    "merged_at": "2026-08-24T02:14:00Z",
+    "blocked_reason": null
   },
   {
     "id": "task_20260819172835_967q0x",
