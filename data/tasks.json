@@ -27,15 +27,16 @@
     "title": "Rewrite meta for homepage",
     "description": "Current: position 4.0, 8 impressions, 0 clicks, CTR 0%. Top-5 position but zero engagement. Suggest: Title='Réservez un Professionnel à Domicile | Coiffeur, Esthéticienne, Coach' Description='Trouvez et réservez en ligne votre coiffeur, esthéticienne ou coach sportif à domicile. Disponible à Paris, Lyon, Bordeaux. Réservation instantanée.'",
     "priority": "high",
-    "status": "todo",
+    "status": "blocked",
     "dedup_key": "meta_rewrite:/",
     "target_url": "/",
     "completed_at": null,
     "completed_by_run": null,
     "commit_sha": null,
     "commit_urls": null,
-    "notes": null,
-    "blocked_reason": null
+    "notes": "Audit du 2026-08-24 : tache verifiee ligne a ligne contre master (HEAD 1ceff5e). Le travail demande est deja en production ; aucun code ecrit, aucune PR ouverte. Voir blocked_reason pour le detail des commits et des elements verifies.",
+    "blocked_reason": "DEJA LIVRE SUR MASTER — la reecriture demandee a ete faite le 2026-07-19 (commit 13079fc \"feat(seo): rewrite homepage meta for B2C brand + annuaire framing\", precede de a97ffbd). Etat actuel de src/app/zh-marketing/home/home.component.ts l.101-108 : title='Z-Domicile - Reservez un Pro a Domicile (Coiffure, Beaute)', description='Annuaire de pros a domicile en France : coiffeur, estheticienne, coach sportif, masseur. Reservation en ligne, RDV sous 24h dans votre arrondissement.' — cadrage annuaire B2C conforme.\n\nDE PLUS, LA PREMISSE DE LA TACHE EST PERIMEE ET CONTREDITE PAR GSC. La tache (redigee le 2026-04-18) justifiait l'action par 'position 4.0, 8 impressions, 0 clic — probleme de presentation SERP'. GSC 28j (2026-07-25 -> 2026-08-21) mesure desormais : 7 impressions, position 22.14, 0 clic. La home n'est plus en top 5 : elle est passee de la position 4.0 (avril) a 7.18 (juillet, citee dans le commentaire du commit 13079fc) puis 22.14 aujourd'hui. Le probleme n'est donc plus le CTR d'un snippet bien positionne mais une perte de positionnement — une 3e reecriture de meta en 5 semaines n'y repondrait pas, empecherait Google de reevaluer le titre actuel (change il y a ~5 semaines seulement) et risquerait de regresser une version ecrite sur des donnees plus fraiches.\n\nDECISION QUI REVIENT A UN HUMAIN : soit passer cette tache en 'done' (le travail demande est en production), soit la remplacer par une tache de fond sur la CHUTE DE POSITION de la home (4.0 -> 22.14 en 4 mois), qui est le vrai probleme et n'est pas un sujet de meta.",
+    "status_updated_at": "2026-08-24"
   },
   {
     "id": "task_20260418170731_nh2k0p",
@@ -84,15 +85,16 @@
     "title": "Enrich /maquilleuse-domicile-paris",
     "description": "Position 12.5, 39 impressions, 2 clicks, CTR 5.13%. Quick-win to push into top 10. Add: (1) FAQ section with 'Combien coûte une maquilleuse à domicile à Paris?', 'Quels types de prestations?' (2) Paris neighborhoods paragraph mentioning 11e, 15e, 18e, Marais (3) Indicative pricing range (4) Internal links to related pages (coiffeuse, esthéticienne).",
     "priority": "high",
-    "status": "todo",
+    "status": "blocked",
     "dedup_key": "content_enrichment:/maquilleuse-domicile-paris",
     "target_url": "/maquilleuse-domicile-paris",
     "completed_at": null,
     "completed_by_run": null,
     "commit_sha": null,
     "commit_urls": null,
-    "notes": null,
-    "blocked_reason": null
+    "notes": "Audit du 2026-08-24 : tache verifiee ligne a ligne contre master (HEAD 1ceff5e). Le travail demande est deja en production ; aucun code ecrit, aucune PR ouverte. Voir blocked_reason pour le detail des commits et des elements verifies.",
+    "blocked_reason": "DEJA LIVRE SUR MASTER — commit 9c9bcee \"feat(seo): enrich /maquilleuse-domicile-paris — dedicated wedding section + neighborhoods focus\" (meta deja reecrite par 1144f2f). Les 4 elements demandes par la tache sont verifies presents dans src/app/zh-marketing/maquillage-paris/ :\n(1) FAQ — 10 questions dont exactement 'Combien coute une maquilleuse a domicile a Paris ?' (component.ts l.98) et les types de prestations couverts par la section 'Tous les Maquillages, Chez Vous' (component.html l.98).\n(2) Quartiers Paris — section 'Paris et Alentours' (component.html l.296) citant le 7e, 8e, 16e, 17e et explicitement 'le 11e, 15e et 18e (Montmartre)'.\n(3) Tarifs — FAQ 'Combien coute une maquilleuse a domicile a Paris ?' + 'Comment voir les tarifs ?'.\n(4) Liens internes — section .internal-links (component.html l.415) pointant vers /coiffeuse-domicile-paris, /estheticienne-a-domicile-paris, /manucure-domicile-paris et /faq.\n\nNOTE GSC : la premisse est elle aussi perimee. La tache citait 'position 12.5, 39 impressions, 2 clics, CTR 5.13%' ; GSC 28j (2026-07-25 -> 2026-08-21) mesure 63 impressions, position 35.06, 0 clic. La page a recule malgre l'enrichissement — un humain devrait ouvrir une tache dediee a cette perte de position plutot que de re-enrichir.\n\nDECISION HUMAINE : passer en 'done' (travail en production).",
+    "status_updated_at": "2026-08-24"
   },
   {
     "id": "task_20260418170731_d7k7kg",
@@ -102,15 +104,16 @@
     "title": "Enrich /coiffeur-a-domicile-bordeaux",
     "description": "Position 19.4, 17 impressions, 0 clicks, CTR 0%. Needs content boost to reach top 15. Add: (1) Local FAQ with 'Combien coûte un coiffeur à domicile à Bordeaux?' (2) Bordeaux neighborhoods: Chartrons, Saint-Michel, Mériadeck, Bacalan (3) Pricing range (4) Internal links to homepage + other Bordeaux pages (esthéticienne-a-domicile-bordeaux when created).",
     "priority": "high",
-    "status": "todo",
+    "status": "blocked",
     "dedup_key": "content_enrichment:/coiffeur-a-domicile-bordeaux",
     "target_url": "/coiffeur-a-domicile-bordeaux",
     "completed_at": null,
     "completed_by_run": null,
     "commit_sha": null,
     "commit_urls": null,
-    "notes": null,
-    "blocked_reason": null
+    "notes": "Audit du 2026-08-24 : tache verifiee ligne a ligne contre master (HEAD 1ceff5e). Le travail demande est deja en production ; aucun code ecrit, aucune PR ouverte. Voir blocked_reason pour le detail des commits et des elements verifies.",
+    "blocked_reason": "DEJA LIVRE SUR MASTER — et plutot deux fois qu'une : commits 1e16981, 877a24c, 98059d1, 33cd7c5 (enrichissements) + e5ee8f5 et 3bf8341 (reecritures meta). Les 4 elements demandes sont verifies presents dans src/app/zh-marketing/coiffeur-bordeaux/ :\n(1) FAQ locale prix — largement couverte : 'Quel est le prix moyen d'un coiffeur a domicile a Bordeaux ?' (component.ts l.92), 'Quel est le prix d'un coiffeur a domicile a Bordeaux ?' (l.100), 'Ou trouver un coiffeur a domicile pas cher a Bordeaux ?' (l.96) — 19 questions au total.\n(2) Quartiers Bordeaux — Chartrons, Saint-Michel, Meriadeck et Bacalan tous les 4 presents, dans le HTML comme dans le TS (33 occurrences cumulees), avec une FAQ dediee 'Y a-t-il une coiffeuse a domicile aux Chartrons ou a Bacalan ?' (l.116).\n(3) Fourchette de prix — presente (section 'Coiffeur pas cher Bordeaux' ajoutee par 877a24c + FAQ prix).\n(4) Liens internes — 10 routerLink dans le HTML.\n\nATTENTION : la tache 'task_20260819172835_dr95uy' (meta_rewrite /coiffeur-a-domicile-bordeaux, priorite medium, toujours en todo) est probablement dans le meme cas — la meta a ete reecrite par 3bf8341. A verifier par le relecteur avant de la programmer.\n\nDECISION HUMAINE : passer en 'done' (travail en production).",
+    "status_updated_at": "2026-08-24"
   },
   {
     "id": "task_20260418170731_r1tdzr",
@@ -181,15 +184,16 @@
     "title": "Enrich /coiffeur-a-domicile-lyon",
     "description": "Page indexed but invisible: position 47-65 on 35+ impressions for 'coiffeur à domicile lyon' variants. 0 clicks. Needs content boost: (1) FAQ 'Combien coûte un coiffeur à domicile à Lyon?' (2) Lyon neighborhoods: Presqu'île, Part-Dieu, Confluence, Villeurbanne (3) Pricing range 40-80€ (4) Internal links to homepage + other Lyon pages.",
     "priority": "high",
-    "status": "todo",
+    "status": "blocked",
     "dedup_key": "content_enrichment:/coiffeur-a-domicile-lyon",
     "target_url": "/coiffeur-a-domicile-lyon",
     "completed_at": null,
     "completed_by_run": null,
     "commit_sha": null,
     "commit_urls": null,
-    "notes": null,
-    "blocked_reason": null
+    "notes": "Audit du 2026-08-24 : tache verifiee ligne a ligne contre master (HEAD 1ceff5e). Le travail demande est deja en production ; aucun code ecrit, aucune PR ouverte. Voir blocked_reason pour le detail des commits et des elements verifies.",
+    "blocked_reason": "DEJA LIVRE SUR MASTER — commits 6494177 \"enrich /coiffeur-a-domicile-lyon — quartiers narrative, pricing block, internal links\" (qui reprend litteralement les 4 points de cette tache), puis cdd02d8, d888a20, 8befdee, 85a742a, et meta reecrite par 7fc01bb. Verifie dans src/app/zh-marketing/coiffeur-lyon/ :\n(1) FAQ prix — 'Quel est le prix d'un coiffeur a domicile a Lyon ?' (component.ts l.82) + 'Existe-t-il des coiffeurs a domicile pas chers a Lyon ?' (l.86) — 18 questions au total.\n(2) Quartiers Lyon — Presqu'ile, Part-Dieu, Confluence et Villeurbanne tous les 4 presents (HTML + TS), plus une FAQ 'Le coiffeur se deplace-t-il dans toute la metropole lyonnaise (Grand Lyon) ?' (l.110).\n(3) Fourchette de prix — bloc pricing ajoute par 6494177.\n(4) Liens internes — 16 routerLink dans le HTML.\n\nNOTE GSC : la page reste faible malgre l'enrichissement — GSC 28j (2026-07-25 -> 2026-08-21) : 256 impressions, 2 clics, position 26.81 (la tache citait position 47-65 sur 35 impressions, donc nette progression en impressions et en position, mais toujours hors top 20). Le contenu demande est livre ; ce qui manque maintenant releve de l'autorite/maillage, pas d'un ajout de FAQ supplementaire.\n\nDECISION HUMAINE : passer en 'done' (travail en production).",
+    "status_updated_at": "2026-08-24"
   },
   {
     "id": "task_20260420124524_6ycc97",
@@ -199,7 +203,7 @@
     "title": "Enrich /search-pro with B2C sections",
     "description": "Quick-win: position 10.8-12.0 on 'professionnel à domicile' (40 impressions), near top 10. Transform from generic search form into B2C landing page. Add: (1) 'Nos professionnels les plus demandés' section with cards linking to /coiffeuse-domicile-paris, /estheticienne-a-domicile-paris, /coach-sportif-a-domicile-paris, /manucure-domicile-paris (2) 'Comment ça marche' 3-step process (3) Trust signals ('Pros vérifiés', 'Réservation instantanée').",
     "priority": "high",
-    "status": "todo",
+    "status": "in_progress",
     "dedup_key": "content_enrichment:/search-pro",
     "target_url": "/search-pro",
     "completed_at": null,
@@ -207,7 +211,8 @@
     "commit_sha": null,
     "commit_urls": null,
     "notes": null,
-    "blocked_reason": null
+    "blocked_reason": null,
+    "status_updated_at": "2026-08-24"
   },
   {
     "id": "task_20260819172835_967q0x",
