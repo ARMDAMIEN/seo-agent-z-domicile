@@ -228,18 +228,22 @@
     "title": "Rewrite meta for /faq",
     "description": "Position 10.0, 2 impressions, 0 clicks, CTR 0% over 28d (2026-07-20 to 2026-08-16). Small sample but position is already favorable, worth capturing. Suggest: Title='FAQ | Questions Fréquentes sur Z-Domicile' Description='Toutes les réponses à vos questions sur la réservation d'un coiffeur, esthéticienne, coach sportif ou manucure à domicile : tarifs, délais, zones couvertes, paiement sécurisé.'",
     "priority": "high",
-    "status": "in_review",
+    "status": "done",
     "dedup_key": "meta_rewrite:/faq",
     "target_url": "/faq",
-    "completed_at": null,
-    "completed_by_run": null,
-    "commit_sha": null,
-    "commit_urls": null,
-    "notes": "Meta de /faq réécrites dans faq.component.ts (appel SeoService.updateMetaTags) : title 'FAQ | Questions Fréquentes sur la Beauté à Domicile' (51 car.) et description de 150 car. mentionnant coiffeur/esthéticienne/manucure à domicile, pour capter les clics à la position 10 (CTR actuel 0 %). Écart assumé vs la suggestion de la tâche : titre recentré sur l'intention de service plutôt que sur la marque, et « tarifs / zones couvertes » retirés de la description car la page /faq ne traite pas ces sujets.",
+    "completed_at": "2026-08-25T02:12:00.000Z",
+    "completed_by_run": "2026-08-25-review",
+    "commit_sha": "33ff358d56b1b1fe916cf8f3b69e66929d17d299",
+    "commit_urls": [
+      "https://github.com/ARMDAMIEN/ANGULAR-ZH/pull/131"
+    ],
+    "notes": "MERGE le 2026-08-25 (squash 33ff358 sur master). Parti en production : les 3 chaines meta de src/app/zh-marketing/faq/faq.component.ts l.212-215 (appel SeoService.updateMetaTags dans initSeo). title 'FAQ | Questions Frequentes sur la Beaute a Domicile' (51 car.), description de 150 car., keywords recentres sur l'intention de service. Aucun autre fichier touche (1 fichier, +3/-3).\n\nRELECTURE : compilation reellement lancee et verte (npm ci puis npx tsc --noEmit -p tsconfig.json, exit 0, sur la branche de PR rebasee sur master 411204f). Statut CI Vercel : success. Apostrophes correctement echappees (l\\'annulation en chaine simple quote). Longueurs conformes (title 51, description 150). Aucune donnee inventee : aucun prix, note, avis, nombre de clients, temoignage, delai ni statistique introduit par le diff. La seule affirmation factuelle de la description, 'paiement securise', est deja affirmee 11 fois dans le depot dont dans la FAQ elle-meme (categorie Paiement : Stripe, certifie PCI-DSS). Les 4 themes annonces (reservation, paiement, annulation, deroulement) correspondent chacun a une categorie reellement presente dans faqCategories. Vocabulaire 100 % B2C, aucun terme SaaS/B2B introduit. Ecart assume vs la suggestion de la tache (retrait de 'tarifs' et 'zones couvertes') juge PLUS correct que la suggestion : la page /faq ne traite pas ces sujets, les promettre aurait cree une deception au clic.\n\nINDEXATION : demandee et acceptee (gsc_request_indexation, URL_UPDATED, ok:true) sur https://www.z-domicile.fr/faq. Reserve de methode : curl vers la prod est impossible depuis cet environnement (le proxy repond 403 au CONNECT vers www.z-domicile.fr), la verification 200 exigee par le playbook n'a donc PAS pu etre faite par curl. Elle a ete remplacee par gsc_inspect_url, qui repond verdict PASS, coverage_state 'Submitted and indexed', page_fetch_state SUCCESSFUL, dernier crawl 2026-08-18 : l'URL existe bien et est servie correctement — c'est une page ancienne deja indexee, pas une creation. Non verifie : que le redeploiement Vercel du merge etait termine au moment de la demande d'indexation.",
     "blocked_reason": null,
     "pr_url": "https://github.com/ARMDAMIEN/ANGULAR-ZH/pull/131",
     "pr_number": 131,
-    "submitted_at": "2026-08-25T00:00:00.000Z"
+    "submitted_at": "2026-08-25T00:00:00.000Z",
+    "merged_at": "2026-08-25T02:10:28.000Z",
+    "status_updated_at": "2026-08-25"
   },
   {
     "id": "task_20260819172835_dr95uy",
