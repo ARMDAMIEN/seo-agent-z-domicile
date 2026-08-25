@@ -228,7 +228,7 @@
     "title": "Rewrite meta for /faq",
     "description": "Position 10.0, 2 impressions, 0 clicks, CTR 0% over 28d (2026-07-20 to 2026-08-16). Small sample but position is already favorable, worth capturing. Suggest: Title='FAQ | Questions Fréquentes sur Z-Domicile' Description='Toutes les réponses à vos questions sur la réservation d'un coiffeur, esthéticienne, coach sportif ou manucure à domicile : tarifs, délais, zones couvertes, paiement sécurisé.'",
     "priority": "high",
-    "status": "todo",
+    "status": "in_progress",
     "dedup_key": "meta_rewrite:/faq",
     "target_url": "/faq",
     "completed_at": null,
