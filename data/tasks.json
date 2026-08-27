@@ -46,7 +46,7 @@
     "title": "Rewrite meta for /a-propos",
     "description": "Current: position 4.3, 4 impressions, 0 clicks, CTR 0%. Top-5 position but no clicks. Suggest: Title='À Propos de Z-Domicile | La Plateforme de Pros à Domicile' Description='Z-Domicile connecte des milliers de clients avec des professionnels beauté et bien-être à domicile. Réservation simple, pros vérifiés, commission 0% sur bookings directs.'",
     "priority": "medium",
-    "status": "todo",
+    "status": "in_progress",
     "dedup_key": "meta_rewrite:/a-propos",
     "target_url": "/a-propos",
     "completed_at": null,
