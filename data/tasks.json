@@ -46,15 +46,19 @@
     "title": "Rewrite meta for /a-propos",
     "description": "Current: position 4.3, 4 impressions, 0 clicks, CTR 0%. Top-5 position but no clicks. Suggest: Title='À Propos de Z-Domicile | La Plateforme de Pros à Domicile' Description='Z-Domicile connecte des milliers de clients avec des professionnels beauté et bien-être à domicile. Réservation simple, pros vérifiés, commission 0% sur bookings directs.'",
     "priority": "medium",
-    "status": "in_progress",
+    "status": "in_review",
     "dedup_key": "meta_rewrite:/a-propos",
     "target_url": "/a-propos",
     "completed_at": null,
     "completed_by_run": null,
     "commit_sha": null,
     "commit_urls": null,
-    "notes": null,
-    "blocked_reason": null
+    "notes": "PR #132 ouverte le 2026-08-27. Réécriture des 3 chaînes meta de src/app/zh-marketing/a-propos/a-propos.component.ts (initSeo / SeoService.updateMetaTags) : title 'À Propos de Z-Domicile | Beauté et Bien-être à Domicile' (55 car.), description de 148 car. annonçant ce que la page contient réellement (histoire, mission, fondateur) avec le cadrage annuaire, et keywords recentrés. 1 fichier, +3/-3 ; ni le canonical ni les données structurées @graph ne sont touchés.\n\nTrois écarts assumés vs la suggestion de la tâche, chacun pour une règle : (1) 'La Plateforme de Pros à Domicile' rejeté — 'plateforme' est du vocabulaire B2B proscrit, c'est justement ce que la PR retire de l'existant ; (2) 'des milliers de clients' rejeté — donnée inventée, aucun chiffre client n'existe dans le dépôt ; (3) 'commission 0% sur bookings directs' rejeté — argument B2B et anglicisme, hors sujet pour une description B2C. Le superlatif invérifiable 'les meilleurs professionnels' est également retiré de l'existant.\n\nPRÉMISSE GSC RE-VÉRIFIÉE (contrairement aux tâches d'avril périmées) : la tâche citait 'position 4.3, 4 impressions, 0 clic'. GSC 28j (2026-07-30 -> 2026-08-26) mesure 2 impressions, position 9.0, 0 clic. La position a reculé mais reste dans le top 10 avec 0 clic — la prémisse tient. Échantillon très faible (2 impressions) : gain attendu modeste et non mesurable à court terme, assumé.\n\nVÉRIFICATIONS RÉELLEMENT EXÉCUTÉES : npm ci puis npx tsc --noEmit exit 0 ; npm run build production exit 0, 'Prerendered 12 static routes'. Contrôle décisif : /a-propos EST dans prerender-routes.txt et le HTML prérendu dist/angular-zh/browser/a-propos/index.html contient bien le nouveau title, la nouvelle description et le canonical correct vers /a-propos — cette page n'est donc pas concernée par le défaut de prerender de task_20260819172835_f24hge, les meta sont réellement servies à Googlebot en HTML brut. Aucune donnée inventée (ni prix, ni note, ni avis, ni chiffre, ni témoignage).\n\nNON VÉRIFIÉ : le HTML réellement servi en production — le proxy sortant de cet environnement refuse le CONNECT vers www.z-domicile.fr (403). Contrôle fait sur la sortie de build locale uniquement.\n\nOBSERVATION HORS PÉRIMÈTRE (non corrigée, mériterait une tâche content_enrichment) : le contenu visible de la page emploie 'plateforme' 4 fois, dont dans le H1 'Une plateforme née d'une conversation' (a-propos.component.html l.34, 102, 130, 142) — vocabulaire B2B proscrit, mais le corriger dépasserait le périmètre d'un meta_rewrite et changerait le H1.",
+    "blocked_reason": null,
+    "pr_url": "https://github.com/ARMDAMIEN/ANGULAR-ZH/pull/132",
+    "pr_number": 132,
+    "submitted_at": "2026-08-27T00:00:00Z",
+    "status_updated_at": "2026-08-27"
   },
   {
     "id": "task_20260418170731_bqdnyr",
