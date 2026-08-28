@@ -260,18 +260,21 @@
     "title": "Rewrite meta for /coiffeur-a-domicile-bordeaux",
     "description": "Position 13.77, 216 impressions, 3 clicks, CTR 1.39% over 28d (2026-07-20 to 2026-08-16). Best volume-to-low-CTR ratio on the site — well positioned but underperforming on clicks. Suggest: Title='Coiffeur à Domicile Bordeaux | Réservation en Ligne dès 35€' Description='Besoin d'un coiffeur à domicile à Bordeaux ? Coupe, brushing, coloration dans votre quartier (Chartrons, Saint-Michel, Mériadeck, Bacalan). Professionnels vérifiés, réservation instantanée.'",
     "priority": "medium",
-    "status": "in_review",
+    "status": "done",
     "dedup_key": "meta_rewrite:/coiffeur-a-domicile-bordeaux",
     "target_url": "/coiffeur-a-domicile-bordeaux",
-    "completed_at": null,
-    "completed_by_run": null,
-    "commit_sha": null,
-    "commit_urls": null,
-    "notes": "Réécriture du title et de la description dans coiffeur-bordeaux.component.ts (appel seoService.updateMetaTags). Corrige au passage un prix erroné : la description annonçait « brushing dès 20€ » alors que la page affiche le brushing 25 à 40 € (les 20 € sont la coupe enfant). Ajoute Mériadeck aux quartiers cités et remonte « RDV en 24h » dans le title ; aucun tarif inventé, les deux prix viennent du tableau tarifs du composant.",
+    "completed_at": "2026-08-28T02:15:00.000Z",
+    "completed_by_run": "2026-08-28",
+    "commit_sha": "5e7dbd8f68f8f9ef9ead46cb9866e62436f5eff8",
+    "commit_urls": [
+      "https://github.com/ARMDAMIEN/ANGULAR-ZH/pull/133"
+    ],
+    "notes": "Relu et merge (squash) le 2026-08-28 — PR #133, commit 5e7dbd8. Parti en production : title et description de /coiffeur-a-domicile-bordeaux (coiffeur-bordeaux.component.ts, appel seoService.updateMetaTags ; diff limite a 2 lignes, keywords/url/image/type et donnees structurees @graph inchanges). Nouveau title (57 car.) : 'Coiffeur a Domicile Bordeaux | Coupe des 25 EUR, RDV en 24h'. Nouvelle description (153 car.) citant Chartrons, Saint-Michel, Bacalan, Meriadeck, Caudean. VERIFICATION DES FAITS : aucun fait invente. 'des 25 EUR' provient de tarifsPasCher (shampoing + coupe, offre d'appel) et etait deja dans le title en ligne ; 'brushing 25-40 EUR' correspond exactement au tableau tarifs ; 'RDV en 24h' etait deja dans la description en ligne et est etaye par le HTML ('livre en moins de 24h', 'le jour meme ou le lendemain') ; les 5 quartiers sont deja cites dans la FAQ de la page. Aucun avis, note, statistique, temoignage ni nombre de clients ajoute. CORRECTION UTILE : l'ancienne description promettait 'brushing des 20 EUR', tarif inexistant sur la page (le brushing y est affiche 25 a 40 EUR ; les 20 EUR sont la coupe enfant). COMPILATION REELLE : npm ci puis 'npx tsc --noEmit -p tsconfig.json' (exit 0) et 'npm run build' (exit 0, 12 routes prerendues). Le warning de budget de bundle est preexistant et sans rapport. INDEXATION : demandee via gsc_request_indexation (URL_UPDATED), reponse ok. La verification curl 200 a ete impossible (la politique reseau de l'environnement bloque www.z-domicile.fr, CONNECT 403) ; la mise en ligne a ete confirmee a la place par gsc_inspect_url : verdict PASS, page_fetch_state SUCCESSFUL, 'Submitted and indexed'. A SIGNALER : /coiffeur-a-domicile-bordeaux est absent de prerender-routes.txt (condition preexistante sur master, non introduite par cette PR) — a traiter dans une tache dediee.",
     "blocked_reason": null,
     "pr_url": "https://github.com/ARMDAMIEN/ANGULAR-ZH/pull/133",
     "pr_number": 133,
-    "submitted_at": "2026-08-28T00:00:00.000Z"
+    "submitted_at": "2026-08-28T00:00:00.000Z",
+    "merged_at": "2026-08-28T02:13:00.000Z"
   },
   {
     "id": "task_20260819172835_wty949",
