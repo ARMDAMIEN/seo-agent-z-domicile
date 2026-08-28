@@ -130,15 +130,15 @@
     "title": "Enrich /manucure-domicile-paris",
     "description": "Position 10.2, 102 impressions, 3 clicks, CTR 2.94%. Already performing well but close to position 11. Consolidate top-10 position by adding: (1) FAQ 'Quel est le prix d'une manucure à domicile?' (2) Neighborhoods detail (11e, 15e, 18e) (3) Service types (semi-permanent, gel, classic) (4) Internal links to other Paris beauty pages.",
     "priority": "medium",
-    "status": "todo",
+    "status": "blocked",
     "dedup_key": "content_enrichment:/manucure-domicile-paris",
     "target_url": "/manucure-domicile-paris",
     "completed_at": null,
     "completed_by_run": null,
     "commit_sha": null,
     "commit_urls": null,
-    "notes": null,
-    "blocked_reason": null
+    "notes": "Aucune PR ouverte : la tâche est déjà satisfaite par du travail postérieur.",
+    "blocked_reason": "Tâche obsolète — les 4 enrichissements demandés sont déjà en ligne sur la page. Vérifié dans ANGULAR-ZH : (1) FAQ « Quel est le prix d'une manucure à domicile à Paris ? » présente dans manucure-paris.component.ts (tableau faqs) ; (2) quartiers 11e/15e/18e détaillés dans la section « Manucure à Domicile dans Tous les Arrondissements de Paris » (manucure-paris.component.html) + une FAQ dédiée aux 11e/15e/18e ; (3) types de prestations (classique, semi-permanent, gel/résine, nail art, beauté des pieds, dépose) dans le tableau prestations + la section « Tarifs Indicatifs » ; (4) liens internes vers /maquilleuse-domicile-paris, /estheticienne-a-domicile-paris et /coiffeuse-domicile-paris dans la section .section-links. Livré par les commits 2467be5 (12/07), a4eacd8 (09/08) et 1ceff5e (20/08), tous postérieurs à la création de la tâche (18/04). Rien à ajouter sans dupliquer l'existant — un humain peut fermer cette tâche."
   },
   {
     "id": "task_20260418170731_a8r8l7",
@@ -148,15 +148,15 @@
     "title": "Add internal links from homepage to Paris local pages",
     "description": "Query 'professionnel à domicile' (16 impressions, position 10.6) lands on homepage but is generic. Add internal links FROM homepage (H1 section or 'Comment ça marche') TO: /coiffeuse-domicile-paris, /estheticienne-a-domicile-paris, /manucure-domicile-paris, /maquilleuse-domicile-paris. Anchor text: 'coiffeur à domicile à Paris', 'esthéticienne à domicile', etc.",
     "priority": "medium",
-    "status": "todo",
+    "status": "blocked",
     "dedup_key": "internal_linking:/:local_pages",
     "target_url": "/",
     "completed_at": null,
     "completed_by_run": null,
     "commit_sha": null,
     "commit_urls": null,
-    "notes": null,
-    "blocked_reason": null
+    "notes": "Aucune PR ouverte : la tâche est déjà satisfaite par le commit 606c15a.",
+    "blocked_reason": "Tâche obsolète — les liens internes demandés existent déjà sur la page d'accueil. Vérifié dans ANGULAR-ZH (home.component.html) : /coiffeuse-domicile-paris, /estheticienne-a-domicile-paris, /manucure-domicile-paris et /coach-sportif-a-domicile-paris sont liés depuis la section « services » ; la section « Services à Domicile Dans Votre Ville » ajoute /maquilleuse-domicile-paris, /coiffeur-a-domicile-lyon et /coiffeur-a-domicile-bordeaux ; le footer reprend les 4 pages Paris avec des ancres géolocalisées. Livré par le commit 606c15a du 27/04/2026, postérieur à la création de la tâche (18/04). Rien à ajouter — un humain peut fermer cette tâche."
   },
   {
     "id": "task_20260420124524_ra110d",
@@ -260,15 +260,18 @@
     "title": "Rewrite meta for /coiffeur-a-domicile-bordeaux",
     "description": "Position 13.77, 216 impressions, 3 clicks, CTR 1.39% over 28d (2026-07-20 to 2026-08-16). Best volume-to-low-CTR ratio on the site — well positioned but underperforming on clicks. Suggest: Title='Coiffeur à Domicile Bordeaux | Réservation en Ligne dès 35€' Description='Besoin d'un coiffeur à domicile à Bordeaux ? Coupe, brushing, coloration dans votre quartier (Chartrons, Saint-Michel, Mériadeck, Bacalan). Professionnels vérifiés, réservation instantanée.'",
     "priority": "medium",
-    "status": "todo",
+    "status": "in_review",
     "dedup_key": "meta_rewrite:/coiffeur-a-domicile-bordeaux",
     "target_url": "/coiffeur-a-domicile-bordeaux",
     "completed_at": null,
     "completed_by_run": null,
     "commit_sha": null,
     "commit_urls": null,
-    "notes": null,
-    "blocked_reason": null
+    "notes": "Réécriture du title et de la description dans coiffeur-bordeaux.component.ts (appel seoService.updateMetaTags). Corrige au passage un prix erroné : la description annonçait « brushing dès 20€ » alors que la page affiche le brushing 25 à 40 € (les 20 € sont la coupe enfant). Ajoute Mériadeck aux quartiers cités et remonte « RDV en 24h » dans le title ; aucun tarif inventé, les deux prix viennent du tableau tarifs du composant.",
+    "blocked_reason": null,
+    "pr_url": "https://github.com/ARMDAMIEN/ANGULAR-ZH/pull/133",
+    "pr_number": 133,
+    "submitted_at": "2026-08-28T00:00:00.000Z"
   },
   {
     "id": "task_20260819172835_wty949",
