@@ -314,6 +314,24 @@
     "status_updated_at": "2026-08-21"
   },
   {
+    "id": "task_20260830090000_pz7wke",
+    "created_at": "2026-08-30T09:00:00.000Z",
+    "created_by_run": "2026-08-30",
+    "type": "investigation",
+    "title": "Chute de position simultanée sur accueil, manucure et maquilleuse à domicile Paris malgré correctifs déjà livrés",
+    "description": "GSC 28j (2026-07-31 -> 2026-08-27) montre une dégradation de position sur 3 pages qui performaient mieux auparavant, alors même que des réécritures meta et/ou enrichissements de contenu ont déjà été livrés en production sur chacune : (1) Page d'accueil (/) : position 19.75 (8 impressions, 0 clic) — était en position 4.0 en avril 2026 (tâche task_20260418170731_8cx26u, toujours bloquée en attente d'une décision humaine), puis 22.14 sur la fenêtre du 2026-08-24 citée dans cette même tâche. (2) /manucure-domicile-paris : position 22.98 (320 impressions, 1 clic, CTR 0.31%) — était en position 10.2 en avril 2026 (102 impressions, CTR 2.94%, tâche task_20260418170731_r1tdzr) et avait déjà eu 2 réécritures de meta mergées (task_20260420124524_ra110d le 2026-04-20, puis commit 1ceff5e le 2026-08-20) ; la position continue de se dégrader au lieu de s'améliorer après ces correctifs. (3) /maquilleuse-domicile-paris : position 37.76 (78 impressions, 0 clic, CTR 0%) — était en position 12.5 en avril 2026 (39 impressions, 2 clics, CTR 5.13%, tâche task_20260418170731_6b6i8v), puis 35.06 sur la fenêtre du 2026-08-24 (audit de la même tâche), malgré un enrichissement déjà livré en production (section mariage dédiée, quartiers, FAQ, liens internes — commits 9c9bcee et 1144f2f). Point commun aux 3 pages : elles ont déjà reçu le traitement recommandé (meta et/ou contenu) sans amélioration de position — au contraire, la dégradation se poursuit dans le temps. Cela suggère une cause commune non traitée par des tâches ponctuelles page par page : perte d'autorité/backlinks, signal algorithmique Google, ou un problème technique transverse (le défaut de prerender déjà documenté pour d'autres pages dans task_20260819172835_f24hge et task_20260819172835_b5ndat pourrait aussi affecter celles-ci si elles ne sont pas dans prerender-routes.txt). Ne peut pas être corrigé par un nouveau meta_rewrite ou content_enrichment ponctuel sans diagnostic préalable. Un humain doit : (1) vérifier si /, /manucure-domicile-paris et /maquilleuse-domicile-paris figurent bien dans prerender-routes.txt d'ANGULAR-ZH ; (2) vérifier dans GSC s'il existe une action manuelle ou un signal de sécurité sur la propriété ; (3) vérifier l'évolution des backlinks (Search Console ou outil externe) sur ces 3 URLs ; (4) déterminer si une cannibalisation entre pages du site explique la baisse (ex. une autre page qui capterait désormais ces requêtes).",
+    "priority": "high",
+    "status": "todo",
+    "dedup_key": "investigation:paris-position-drop-pattern",
+    "target_url": null,
+    "completed_at": null,
+    "completed_by_run": null,
+    "commit_sha": null,
+    "commit_urls": null,
+    "notes": null,
+    "blocked_reason": null
+  },
+  {
     "id": "task_20260819172835_b5ndat",
     "created_at": "2026-08-19T17:28:35.000Z",
     "created_by_run": "2026-08-19",
