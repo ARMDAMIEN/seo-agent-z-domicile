@@ -284,7 +284,7 @@
     "title": "Create /coach-sportif-a-domicile-lyon (S8 Phase 2)",
     "description": "S8 roadmap row, still 🟢 À faire and confirmed absent from ANGULAR-ZH app-routing.module.ts (verified 2026-08-19). No create_seo_page task has shipped since April 2026 (>7 days), triggering the pacing rule. No current GSC impressions for 'coach sportif à domicile lyon' since the page does not exist yet — priority set to medium (not a currently-rising keyword by GSC evidence), though SEO_TRACKER lists this row as 🔴 Critique in its own priority column. Use local page template: H1='Coach Sportif à Domicile Lyon — Réservez en ligne', sections: How it works, Pro listings, Pricing indicative, FAQ ('Combien coûte un coach sportif à domicile à Lyon ?'), Neighborhoods (Presqu'île, Part-Dieu, Confluence, Villeurbanne). Match structure/imports/SeoService calls of an existing local page (e.g. /coach-sportif-a-domicile-paris). Register route + add <url> entry to sitemap.xml.",
     "priority": "medium",
-    "status": "todo",
+    "status": "in_progress",
     "dedup_key": "create_seo_page:/coach-sportif-a-domicile-lyon",
     "target_url": "/coach-sportif-a-domicile-lyon",
     "completed_at": null,
