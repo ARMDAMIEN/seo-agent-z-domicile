@@ -49,7 +49,7 @@
 | S5 — Article "Coiffeur à domicile : comment ça marche ?" | 🟡 Important | 🟢 À faire | — | Mot-clé : `coiffeur à domicile` (10K-100K). Type : article blog. |
 | S6 — Page Esthéticienne Bordeaux | 🔴 Critique | 🟢 À faire | — | Mot-clé : `esthéticienne à domicile bordeaux`. URL cible : `/estheticienne-a-domicile-bordeaux`. Ville : Bordeaux. |
 | S7 — Article "Meilleurs coiffeurs à domicile Paris" | 🟡 Important | 🟢 À faire | — | Mot-clé : `coiffeur à domicile paris` (10K-100K). Type : article blog. |
-| S8 — Page Coach sportif Lyon | 🔴 Critique | 🟢 À faire | — | Mot-clé : `coach sportif à domicile lyon`. URL cible : `/coach-sportif-a-domicile-lyon`. Ville : Lyon. |
+| S8 — Page Coach sportif Lyon | 🔴 Critique | ✅ Fait | 02/09/2026 | Mot-clé : `coach sportif à domicile lyon`. URL cible : `/coach-sportif-a-domicile-lyon`. Ville : Lyon. Page créée et mergée (PR #135) : meta, structured data @graph (Service + BreadcrumbList + FAQPage), 12 FAQ, quartiers Lyon, route + sitemap + prerender. 4 liens entrants (accueil ×2, /search-pro, /coiffeur-a-domicile-lyon) vérifiés dans le HTML prérendu. Indexation Google restant à demander (accès réseau au site bloqué lors de la relecture). |
 
 ---
 

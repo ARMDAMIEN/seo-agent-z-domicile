@@ -284,20 +284,23 @@
     "title": "Create /coach-sportif-a-domicile-lyon (S8 Phase 2)",
     "description": "S8 roadmap row, still 🟢 À faire and confirmed absent from ANGULAR-ZH app-routing.module.ts (verified 2026-08-19). No create_seo_page task has shipped since April 2026 (>7 days), triggering the pacing rule. No current GSC impressions for 'coach sportif à domicile lyon' since the page does not exist yet — priority set to medium (not a currently-rising keyword by GSC evidence), though SEO_TRACKER lists this row as 🔴 Critique in its own priority column. Use local page template: H1='Coach Sportif à Domicile Lyon — Réservez en ligne', sections: How it works, Pro listings, Pricing indicative, FAQ ('Combien coûte un coach sportif à domicile à Lyon ?'), Neighborhoods (Presqu'île, Part-Dieu, Confluence, Villeurbanne). Match structure/imports/SeoService calls of an existing local page (e.g. /coach-sportif-a-domicile-paris). Register route + add <url> entry to sitemap.xml.",
     "priority": "medium",
-    "status": "in_review",
+    "status": "done",
     "dedup_key": "create_seo_page:/coach-sportif-a-domicile-lyon",
     "target_url": "/coach-sportif-a-domicile-lyon",
     "status_updated_at": "2026-09-02",
-    "completed_at": null,
-    "completed_by_run": null,
-    "commit_sha": null,
-    "commit_urls": null,
-    "notes": "Tentative 2 (PR #135), apres le refus de la PR #134 pour page orpheline. Le contenu de la page (commit 25da3f7) est repris A L'IDENTIQUE conformement a la consigne du relecteur ; le seul commit nouveau (06733a1, +11 lignes sur 3 fichiers) ajoute les 4 liens entrants manquants : accueil section Popular Cities et footer, paragraphe .intro-cities de /search-pro, et carte reciproque .related-link sur /coiffeur-a-domicile-lyon. Verification decisive faite sur le HTML PRERENDU (pas seulement sur le source) : 2 liens dans index.html, 1 dans search-pro/index.html, 1 dans coiffeur-a-domicile-lyon/index.html — les liens sont donc visibles de Googlebot sans JS. La page cible se prerend avec son propre title et son propre canonical https://www.z-domicile.fr/coach-sportif-a-domicile-lyon. Controles reellement executes : npm ci OK, npx tsc --noEmit exit 0, npm run build exit 0 avec 13 routes prerendues (12 sur master) ; l'avertissement de budget de bundle preexiste sur master. Aucune donnee inventee dans les lignes ajoutees (aucun prix, note, avis, temoignage, effectif ni statistique) ; la seule phrase descriptive reprend des formulations deja presentes dans la page cible validee. Nouveau nom de branche en -v2 comme demande, la branche de la PR #134 n'ayant pas pu etre supprimee cote remote.",
+    "completed_at": "2026-09-02T02:15:00.000Z",
+    "completed_by_run": "2026-09-02-review",
+    "commit_sha": "8da208986861b3d7704d8c8ecf86bab24c41a6ce",
+    "commit_urls": [
+      "https://github.com/ARMDAMIEN/ANGULAR-ZH/pull/135"
+    ],
+    "notes": "MERGEE en squash (8da2089) apres relecture complete. Le motif du refus de la PR #134 (page orpheline) est reellement corrige : 4 liens entrants comptes par le relecteur dans le HTML PRERENDU issu de son propre build (index.html 2, search-pro/index.html 1, coiffeur-a-domicile-lyon/index.html 1). Controles reellement executes par le relecteur : npm ci OK, npx tsc --noEmit exit 0, npm run build exit 0 avec 13 routes prerendues ; la page cible se prerend avec son propre <title>, son <h1> et son canonical https://www.z-domicile.fr/coach-sportif-a-domicile-lyon. JSON-LD parse OK, @graph = Service + BreadcrumbList + FAQPage, sans aggregateRating/review/price. Donnees inventees : AUCUNE — pas un seul prix, note, avis, temoignage, effectif ni statistique dans la page ; les affirmations factuelles reprises (diplomes BPJEPS/DEJEPS/STAPS, annulation gratuite 24h, espace 2m x 2m, reservation en 2 minutes, tarif sans frais caches) existent toutes deja mot pour mot sur /coach-sportif-a-domicile-paris et pages soeurs sur master ; la page evite volontairement d'annoncer un prix. Vocabulaire 100% B2C. HTML equilibre (aucune balise non fermee), toutes les liaisons de template correspondent a des membres du composant, tous les routerLink pointent vers des routes enregistrees, CSS scope sans ::ng-deep. Reserves non bloquantes : (1) l'image OG assets/images/coach-sportif-lyon-og.jpg n'existe pas dans le depot, mais c'est une dette preexistante partagee par 5 pages deja mergees (coiffeur-lyon, coiffeur-bordeaux, estheticienne-lyon/bordeaux, coach-sportif-paris) — a traiter par une tache dediee, pas un motif de refus ici ; (2) title 62 car. et meta description 161 car., soit 1-2 car. au-dessus des cibles, meme convention que la page Paris (63 car.). INDEXATION GOOGLE NON DEMANDEE : la politique reseau de l'environnement refuse l'egress vers www.z-domicile.fr (403 CONNECT du proxy), le code HTTP n'a donc PAS pu etre verifie et la regle interdit de pinguer Google sans un 200 constate. L'indexation de /coach-sportif-a-domicile-lyon reste A DEMANDER.",
     "blocked_reason": null,
     "submitted_at": "2026-09-02T00:00:00.000Z",
     "review_rejections": 1,
     "pr_url": "https://github.com/ARMDAMIEN/ANGULAR-ZH/pull/135",
-    "pr_number": 135
+    "pr_number": 135,
+    "merged_at": "2026-09-02T02:13:00.000Z"
   },
   {
     "id": "task_20260819172835_f24hge",
