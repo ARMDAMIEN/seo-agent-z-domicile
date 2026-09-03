@@ -366,7 +366,7 @@
     "title": "SEO_TRACKER.md out of sync with live ANGULAR-ZH routes (S2, S4, S6)",
     "description": "SEO_TRACKER.md (last updated 25/03/2026) lists S2 (Page Coiffeur Bordeaux), S4 (Page Esthéticienne Lyon) and S6 (Page Esthéticienne Bordeaux) as 🟢 À faire, but app-routing.module.ts in ANGULAR-ZH already registers all 3 routes (coiffeur-a-domicile-bordeaux, estheticienne-a-domicile-lyon, estheticienne-a-domicile-bordeaux), confirmed 2026-08-19. /coiffeur-a-domicile-bordeaux additionally has 216 GSC impressions over 28d, proving it is genuinely live and has been for a while. This tracker/codebase mismatch caused this run to skip S2/S4/S6 for the create_seo_page pacing rule (would have wrongly proposed creating pages that already exist) and instead targeted S8 (Coach sportif Lyon, confirmed genuinely absent from code). A human should verify S2/S4/S6 were actually completed and flip them to ✅ Fait in SEO_TRACKER.md (this agent does not modify 🟢 À faire rows directly outside a successful create_seo_page execution, per operating rules).",
     "priority": "medium",
-    "status": "todo",
+    "status": "in_progress",
     "dedup_key": "investigation:seo-tracker-pages-already-live",
     "target_url": null,
     "completed_at": null,
