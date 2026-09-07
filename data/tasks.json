@@ -403,17 +403,21 @@
     "title": "Retirer le vocabulaire B2B (\"plateforme\") de /a-propos",
     "description": "Repéré lors de l'audit du merge PR #132 (27/08/2026, meta_rewrite:/a-propos) : le contenu VISIBLE de /a-propos emploie encore le mot \"plateforme\" à 4 reprises dans src/app/zh-marketing/a-propos/a-propos.component.html, dont le H1 — vocabulaire B2B/SaaS interdit par les règles opérateur (annuaire framing type Pages Jaunes/WeCasa, jamais \"plateforme\"/\"logiciel\"). Occurrences exactes à corriger : (1) l.35 H1 \"Une plateforme née d'une conversation\" → \"Un annuaire né d'une conversation\" ; (2) l.103 \"je construis cette plateforme avec une conviction\" → \"je construis cet annuaire avec une conviction\" ; (3) l.131 \"devenir la plateforme de référence n°1 pour tous les professionnels à domicile en France\" → \"devenir l'annuaire de référence n°1 pour tous les professionnels à domicile en France\" ; (4) l.143 \"Vous êtes client et vous avez une question sur la plateforme ?\" → \"Vous êtes client et vous avez une question sur notre annuaire ?\". Simple substitution lexicale (plateforme → annuaire), aucun fait, prix, note ou chiffre nouveau introduit — le reste de la phrase est inchangé. Ne pas toucher aux meta tags (déjà réécrits par PR #132) ni aux données structurées.",
     "priority": "medium",
-    "status": "in_review",
+    "status": "done",
     "dedup_key": "content_enrichment:/a-propos",
     "target_url": "/a-propos",
-    "completed_at": null,
-    "completed_by_run": null,
-    "commit_sha": null,
-    "commit_urls": null,
-    "notes": "Les 4 occurrences de « plateforme » dans le contenu visible de src/app/zh-marketing/a-propos/a-propos.component.html (H1 l.35, l.103, l.131, l.143) ont été remplacées par « annuaire », avec les accords grammaticaux ajustés. Aucun autre fichier touché : les meta tags et données structurées de a-propos.component.ts, déjà réécrits par la PR #132, restent inchangés. Substitution purement lexicale, aucun fait, prix ni chiffre introduit.",
+    "completed_at": "2026-09-07T02:12:00.000Z",
+    "completed_by_run": "2026-09-07",
+    "commit_sha": "6225bb22f19c61e21a81e1431a19eb69299f902e",
+    "commit_urls": [
+      "https://github.com/ARMDAMIEN/ANGULAR-ZH/pull/136",
+      "https://github.com/ARMDAMIEN/ANGULAR-ZH/commit/6225bb22f19c61e21a81e1431a19eb69299f902e"
+    ],
+    "notes": "PR #136 relue et mergée en squash sur master le 2026-09-07 (commit 6225bb2). Parti en production : les 4 occurrences de « plateforme » dans le contenu visible de src/app/zh-marketing/a-propos/a-propos.component.html (H1 l.35, l.103, l.131, l.143) remplacées par « annuaire », accords ajustés (cette→cet, née→né, la→l'). Diff de 4 lignes, un seul fichier, aucun fait, prix, avis, note ni chiffre introduit ; a-propos.component.ts non touché. Vérifications du relecteur : npm ci + npx ng build réels et réussis (14 routes prérendues) ; /a-propos bien présent dans prerender-routes.txt et le prérendu porte le title et le canonical https://www.z-domicile.fr/a-propos corrects ; plus aucune occurrence de plateforme/logiciel dans la page. Sitemap : <lastmod> de /a-propos passé de 2025-12-28 à 2026-09-07 et poussé sur master (commit 471b890). Indexation GSC demandée (URL_UPDATED, ok:true) ; la page était déjà « Submitted and indexed », dernier crawl 2026-09-05. Reste hors périmètre de cette tâche : le schema Organization global (SeoService) porte encore la description « Plateforme de mise en relation… » visible dans le JSON-LD de toutes les pages — candidat pour une tâche dédiée.",
     "blocked_reason": null,
     "pr_url": "https://github.com/ARMDAMIEN/ANGULAR-ZH/pull/136",
     "pr_number": 136,
-    "submitted_at": "2026-09-07T00:00:00.000Z"
+    "submitted_at": "2026-09-07T00:00:00.000Z",
+    "merged_at": "2026-09-07T02:10:00.000Z"
   }
 ]
