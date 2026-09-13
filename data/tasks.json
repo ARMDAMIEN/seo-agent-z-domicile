@@ -419,5 +419,41 @@
     "pr_number": 136,
     "submitted_at": "2026-09-07T00:00:00.000Z",
     "merged_at": "2026-09-07T02:10:00.000Z"
+  },
+  {
+    "id": "task_20260913090000_h4k9zq",
+    "created_at": "2026-09-13T09:00:00.000Z",
+    "created_by_run": "2026-09-13",
+    "type": "investigation",
+    "title": "Effondrement du CTR sur la quasi-totalité du site malgré des positions correctes",
+    "description": "GSC 28j (2026-08-14 -> 2026-09-10, sc-domain:z-domicile.fr) : 1265 impressions cumulées toutes pages confondues pour seulement 4 clics au total (CTR site ~0.32%). Détail des pages à fort volume et 0 clic malgré une position à deux chiffres, où un CTR de 2 à 5% serait normalement attendu : /coiffeur-a-domicile-bordeaux (325 impressions, position moyenne 13.62, 0 clic, CTR 0%) ; /manucure-domicile-paris (289 impressions, position 27.40, 0 clic) ; /coiffeur-a-domicile-lyon (247 impressions, position 27.92, 0 clic) ; /coiffeuse-domicile-paris (232 impressions, position 27.17, 0 clic) ; /maquilleuse-domicile-paris (66 impressions, position 39.73, 0 clic) ; /faq (9 impressions, position 13.33, 0 clic). Seules 2 URLs génèrent des clics sur toute la période : /a-propos (9 impressions, 3 clics, CTR 33.3%) et /fiche-resa/8/8?source=direct (1 impression, 1 clic, requête de marque tierce 'conciergerie bordeaux airbnb', hors sujet). Point le plus alarmant : /coiffeur-a-domicile-bordeaux vient de recevoir une réécriture meta le 2026-08-28 (PR #133, il y a 16 jours) dont l'objectif explicite était de corriger un CTR mesuré à 1.39% avant réécriture — le CTR mesuré aujourd'hui est 0%, donc pire qu'avant la réécriture. /faq a subi le même traitement le 2026-08-25 (PR #131) avec le même résultat (CTR 0%). Comparaison historique (déjà amorcée dans task_20260830090000_pz7wke) : le site est passé de 409 impressions / 9 clics (fenêtre d'avril) à 1203 impressions / 7 clics (fin août) à 1265 impressions / 4 clics aujourd'hui — les impressions se maintiennent ou progressent pendant que les clics continuent de reculer, sur un nombre de pages désormais trop large pour que ce soit un hasard statistique isolé. Ne peut pas être corrigé par un nouveau meta_rewrite ponctuel : 2 des pages concernées viennent justement d'être réécrites pour ce symptôme précis, sans aucun effet mesurable, ce qui indique une cause plus profonde que le texte du title/description. Un humain doit : (1) vérifier le rendu réel du snippet Google (title/description/rich results) sur mobile et desktop pour au moins /coiffeur-a-domicile-bordeaux et /manucure-domicile-paris — capture d'écran ou outil externe, cette session ne peut pas atteindre www.z-domicile.fr (proxy réseau bloqué, 403 sur le CONNECT) ; (2) vérifier dans GSC > Expérience / Sécurité et actions manuelles qu'aucune dégradation ou pénalité n'affecte l'affichage ; (3) vérifier que le favicon et les données structurées (@graph Service/FAQ/Breadcrumb) ne produisent pas un rich result cassé ou trompeur qui découragerait le clic ; (4) vérifier qu'aucun changement récent (Vercel, redirections, certificat, balise meta robots) n'affecte l'ensemble du site depuis fin juillet, période où la tendance s'est inversée. Type investigation : aucune action de contenu ne doit être tentée avant ce diagnostic, sous peine de répéter l'échec déjà observé sur bordeaux et faq.",
+    "priority": "critical",
+    "status": "todo",
+    "dedup_key": "investigation:sitewide-ctr-collapse",
+    "target_url": null,
+    "completed_at": null,
+    "completed_by_run": null,
+    "commit_sha": null,
+    "commit_urls": null,
+    "notes": null,
+    "blocked_reason": null
+  },
+  {
+    "id": "task_20260913090000_m3p7xr",
+    "created_at": "2026-09-13T09:00:00.000Z",
+    "created_by_run": "2026-09-13",
+    "type": "create_seo_page",
+    "title": "Créer l'article \"Combien coûte un coiffeur à domicile ?\" (S3 Phase 2)",
+    "description": "Règle de rythme déclenchée : aucune tâche create_seo_page n'a été ajoutée depuis le 2026-08-19 (task_20260819172835_wty949, soit 25 jours > 7 jours) et la ligne 🟢 À faire la plus ancienne de SEO_TRACKER.md sans tâche non-done associée est S3 — 'Article \"Combien coûte un coiffeur à domicile ?\"' (mot-clé cible : 'coiffeuse à domicile tarif', 1K-10K/mois selon AGENT_SEO_CONTEXT.md §4). Les lignes S2 (Coiffeur Bordeaux), S4 (Esthéticienne Lyon) et S6 (Esthéticienne Bordeaux), bien qu'encore 🟢 À faire dans le tracker, sont déjà couvertes par la tâche investigation task_20260819172835_kwkwuv (toujours ouverte, statut blocked) qui documente que leur code existe déjà en production et attend une décision humaine sur la mise à jour du tracker — les recréer ferait doublon, donc S3 est la ligne retenue. Signal GSC actuel sur la requête cible (28j, 2026-08-14 -> 2026-09-10) : très faible, 'tarif coiffeur à domicile pas cher' 2 impressions position 2, 'coiffeur à domicile tarif' 1 impression position 11, 'tarif coiffeur femme à domicile' 1 impression position 7 — pas un cluster montant à ce stade, d'où une priorité medium (et non high). Il n'existe aucune infrastructure de blog dans ANGULAR-ZH (aucun composant/dossier 'blog' ou 'article' trouvé au 2026-09-13) : toutes les pages de contenu du site utilisent des routes plates enregistrées directement dans app-routing.module.ts (ex. /faq, /a-propos, /coiffeur-a-domicile-bordeaux), sans préfixe /blog/. Créer cet article en suivant cette même convention, PAS un préfixe /blog/ inventé. URL cible suggérée : /combien-coute-un-coiffeur-a-domicile. Contenu à produire (article informationnel B2C, pas une page locale ville) : (1) Intro expliquant que le tarif d'un coiffeur à domicile dépend du service et de la ville. (2) Tableau comparatif des tarifs par ville, en reprenant EXACTEMENT les fourchettes déjà publiées et vérifiées dans le dépôt (aucun nouveau chiffre à inventer) : Paris (coiffeuse-paris.component.ts) — coupe femme 35-60€, coupe homme 25-45€, coupe enfant 20-35€, brushing 30-55€, coloration 55-100€, mèches/balayage 70-140€, lissage brésilien 120-250€, chignon mariage 80-180€ ; Lyon (coiffeur-lyon.component.ts) — coupe femme 30-50€, coupe homme 20-40€, coupe enfant 18-30€, brushing 25-45€, coloration 50-90€, mèches/balayage 60-120€, lissage brésilien 110-220€, chignon mariage 70-160€, prestations courtes dès 20-30€ ; Bordeaux (coiffeur-bordeaux.component.ts) — coupe femme 35-55€, coupe homme 30-45€, coupe enfant 20-35€, brushing 25-40€, coloration 60-110€, balayage/mèches 80-150€, chignon événement 60-120€, lissage tanin/brésilien 120-250€, offre d'appel shampoing+coupe dès 25€. (3) Section 'Pourquoi le prix varie' : type de prestation, ville, expérience du professionnel, déplacement inclus sans frais cachés (formulation déjà utilisée sur les 3 pages villes). (4) FAQ courte reprenant 'Le déplacement est-il inclus dans le prix ?' (oui, réponse déjà présente sur les 3 pages villes) et 'Comment voir le tarif exact avant de réserver ?' (chaque professionnel affiche son propre tarif sur son profil avant réservation, formulation déjà utilisée sur /coiffeur-a-domicile-bordeaux). (5) Liens internes vers /coiffeuse-domicile-paris, /coiffeur-a-domicile-lyon, /coiffeur-a-domicile-bordeaux et /search-pro. Enregistrer la route dans app-routing.module.ts, ajouter l'entrée <url> dans sitemap.xml ET dans prerender-routes.txt (obligatoire : 5 pages SEO existantes sont invisibles de Google faute d'être dans prerender-routes.txt, cf. task_20260819172835_f24hge et task_20260819172835_b5ndat — ne pas répéter cette erreur sur une page neuve). Utiliser SeoService.updateMetaTags() + données structurées en @graph comme sur les pages existantes. Aucun avis, note, nombre de clients ou statistique à inventer. Vocabulaire 100% B2C, jamais 'plateforme'/'logiciel'.",
+    "priority": "medium",
+    "status": "todo",
+    "dedup_key": "create_seo_page:/combien-coute-un-coiffeur-a-domicile",
+    "target_url": "/combien-coute-un-coiffeur-a-domicile",
+    "completed_at": null,
+    "completed_by_run": null,
+    "commit_sha": null,
+    "commit_urls": null,
+    "notes": null,
+    "blocked_reason": null
   }
 ]
