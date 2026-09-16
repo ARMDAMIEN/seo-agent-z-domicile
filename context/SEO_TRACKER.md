@@ -44,7 +44,7 @@
 | :---- | :---- | :---- | :---- | :---- |
 | S1 — Page Coach sportif Paris | 🔴 Critique | ✅ Fait | 06/04/2026 | Page complète créée le 06/04. Tous les éléments SEO en place : meta, structured data, FAQ, quartiers Paris. |
 | S2 — Page Coiffeur Bordeaux | 🔴 Critique | 🟢 À faire | — | Mot-clé : `coiffeur à domicile bordeaux` (1K-10K). URL cible : `/coiffeur-a-domicile-bordeaux`. Ville : Bordeaux. |
-| S3 — Article "Combien coûte un coiffeur à domicile ?" | 🟡 Important | 🟢 À faire | — | Mot-clé : `coiffeuse à domicile tarif` (1K-10K). Type : article blog. |
+| S3 — Article "Combien coûte un coiffeur à domicile ?" | 🟡 Important | ✅ Fait | 16/09/2026 | Mot-clé : `coiffeuse à domicile tarif` (1K-10K). URL : `/combien-coute-un-coiffeur-a-domicile` — route plate sans préfixe `/blog/`, conforme à la convention du dépôt (aucune infra de blog n'existe). Page créée et mergée (PR #137) : meta + structured data @graph (Article + BreadcrumbList + FAQPage, 6 questions), tableau comparatif Paris/Lyon/Bordeaux, route + app.module + sitemap + prerender-routes.txt. Build vérifié (15 routes prérendues), title/canonical/H1 confirmés dans le HTML prérendu. 4 liens entrants (accueil + 3 pages villes), 4 liens sortants. Indexation Google demandée le 16/09/2026. |
 | S4 — Page Esthéticienne Lyon | 🔴 Critique | 🟢 À faire | — | Mot-clé : `esthéticienne à domicile lyon` (100-1K). URL cible : `/estheticienne-a-domicile-lyon`. Ville : Lyon. |
 | S5 — Article "Coiffeur à domicile : comment ça marche ?" | 🟡 Important | 🟢 À faire | — | Mot-clé : `coiffeur à domicile` (10K-100K). Type : article blog. |
 | S6 — Page Esthéticienne Bordeaux | 🔴 Critique | 🟢 À faire | — | Mot-clé : `esthéticienne à domicile bordeaux`. URL cible : `/estheticienne-a-domicile-bordeaux`. Ville : Bordeaux. |
