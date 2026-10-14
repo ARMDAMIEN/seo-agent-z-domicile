@@ -509,5 +509,41 @@
     "pr_number": 139,
     "submitted_at": "2026-09-30T00:49:41.170Z",
     "merged_at": "2026-09-30T02:05:00.000Z"
+  },
+  {
+    "id": "task_20261014090000_abvhzl",
+    "created_at": "2026-10-14T09:00:00.000Z",
+    "created_by_run": "2026-10-14",
+    "type": "investigation",
+    "title": "Requêtes hors-sujet indexées sur le domaine : « société de nettoyage » et « conciergerie Airbnb »",
+    "description": "GSC 28j (2026-09-14 -> 2026-10-11, sc-domain:z-domicile.fr, dimension requête) fait apparaître deux clusters de requêtes totalement hors du périmètre beauté/bien-être à domicile décrit dans AGENT_SEO_CONTEXT.md §4 (coiffeur, esthéticienne, manucure, coach sportif, massage, maquilleuse) :\n(a) Cluster « nettoyage » : « societe de nettoyage nord » 16 impressions, position moyenne 15, 0 clic ; « société de nettoyage » 1 impression, position 6, 0 clic ; « entreprise nettoyage cuisine professionnelle » 1 impression, position 1, 0 clic. Total : 18 impressions, 0 clic.\n(b) Cluster « conciergerie Airbnb » : « conciergerie airbnb bordeaux » 5 impressions, position moyenne 1,2, 0 clic ; « amb conciergerie » 6 impressions, position 11,83, 1 clic ; « conciergerie bordeaux » 2 impressions, position 1, 0 clic ; « conciergerie gironde » 1 impression, position 1, 0 clic ; « conciergerie airbnb » 1 impression, position 1, 0 clic ; « amb » 1 impression, position 1, 0 clic. Total : 16 impressions, 1 clic.\nPlusieurs de ces requêtes exactes ressortent en position 1 (« conciergerie airbnb bordeaux », « conciergerie bordeaux », « conciergerie gironde », « entreprise nettoyage cuisine professionnelle »), ce qui n'est pas compatible avec du bruit statistique pur sur un échantillon aussi petit : une position 1 répétée sur des requêtes de niche suggère qu'une page ou une fiche professionnelle du domaine est spécifiquement optimisée pour ce vocabulaire, qui n'appartient à aucune des catégories de prestation listées dans AGENT_SEO_CONTEXT.md §4. Ce run n'a pas croisé la dimension « page » avec la dimension « requête » et ne peut donc pas identifier l'URL exacte qui capte ces impressions, ni confirmer s'il s'agit d'une fiche professionnelle mal catégorisée (un prestataire inscrit sous un intitulé « conciergerie » ou « nettoyage » hors du catalogue de prestations du site) ou d'un contenu résiduel sans rapport avec l'activité actuelle.\nVolume : 34 impressions cumulées sur 861 impressions totales du site sur la période (3,9 %) — signal mineur en volume mais potentiellement significatif pour la cohérence thématique (topical authority) du domaine, qui est construit comme un annuaire beauté/bien-être B2C (cf. règle 2 des Agent Operating Rules).\nDécisions qui reviennent à un humain : (1) relancer une requête GSC croisant la dimension page et la dimension requête sur ces termes précis pour identifier l'URL exacte qui les capte ; (2) vérifier dans le back-office/l'annuaire des professionnels si un prestataire est inscrit sous une catégorie « conciergerie » ou « nettoyage » non alignée avec le positionnement beauté/bien-être du site ; (3) décider s'il faut désindexer, recatégoriser ou laisser tel quel ce contenu selon ce qui est trouvé — aucune action corrective n'est proposée ici tant que l'URL source n'est pas identifiée.",
+    "priority": "medium",
+    "status": "todo",
+    "dedup_key": "investigation:off-topic-queries-nettoyage-conciergerie",
+    "target_url": null,
+    "completed_at": null,
+    "completed_by_run": null,
+    "commit_sha": null,
+    "commit_urls": null,
+    "notes": null,
+    "blocked_reason": null
+  },
+  {
+    "id": "task_20261014090000_s5bdor",
+    "created_at": "2026-10-14T09:00:00.000Z",
+    "created_by_run": "2026-10-14",
+    "type": "create_seo_page",
+    "title": "Créer la page /coiffeur-a-domicile-toulouse (Phase 3 — Scale géographique)",
+    "description": "Règle de rythme déclenchée : la dernière tâche create_seo_page a été ajoutée le 2026-09-30 (task_20260930090000_r8v2ns, /meilleurs-coiffeurs-a-domicile-paris), soit 14 jours avant ce run (2026-10-14) — aucune create_seo_page depuis plus de 7 jours. Les lignes 🟢 À faire les plus anciennes de SEO_TRACKER.md (S2 Coiffeur Bordeaux, S4 Esthéticienne Lyon, S6 Esthéticienne Bordeaux) ont déjà une tâche non-done associée : elles sont couvertes par l'investigation blocked task_20260819172835_kwkwuv, qui a vérifié que leurs 3 routes existent déjà en production — les recréer serait un doublon. La ligne 🟢 À faire suivante sans tâche ouverte est « Scale géographique (Toulouse, Nantes, Lille, Nice...) » (Phase 3, priorité Normal, note : « 1 ville/semaine, template répliqué et personnalisé »). Cette ligne ne précise pas de métier : par cohérence avec le schéma déjà appliqué à Lyon et Bordeaux (coiffeur toujours la première page créée pour une nouvelle ville, cf. S2/S8), et avec AGENT_SEO_CONTEXT.md §4 où « coiffeur à domicile [ville] » est la tête de cluster la mieux positionnée (concurrence Low), la ville retenue est Toulouse (1ère de la liste de scale Phase 3) et le métier coiffeur. URL cible : /coiffeur-a-domicile-toulouse.\nAucune donnée de volume de recherche n'est disponible pour Toulouse dans AGENT_SEO_CONTEXT.md ni dans la fenêtre GSC de ce run (0 impression sur Toulouse sur 28j, marché neuf) : aucune tendance montante ne peut être démontrée, priorité fixée à medium conformément à la règle par défaut (et non high).\nStructure à répliquer, sur le modèle de /coiffeur-a-domicile-lyon et /coiffeur-a-domicile-bordeaux (lire ces fichiers avant d'écrire le nouveau composant) et du template §5 d'AGENT_SEO_CONTEXT.md : H1 « Coiffeur à Domicile à Toulouse — Réservez en ligne », sous-titre présentant des professionnels disponibles par quartier, section « Comment ça marche » (Choisir → Réserver → Recevoir le pro), profils de professionnels (au moins 2-3, à tirer de l'annuaire réel, aucun nom ni avis inventé), fourchette de prix indicative (sans chiffre inventé : ne reprendre que des fourchettes déjà publiées sur une page Paris/Lyon/Bordeaux existante, ou omettre si aucune ne s'applique), FAQ locale (« Combien coûte un coiffeur à domicile à Toulouse ? » formulée sans donner de prix chiffré si aucun n'existe déjà dans le dépôt), CTA « Réserver un coiffeur à domicile à Toulouse ». Quartiers Toulouse à mentionner (quartiers réels et vérifiables, à ajuster si besoin) : Capitole, Saint-Cyprien, Les Carmes, Compans-Caffarelli.\nObligatoire : enregistrer la route dans app-routing.module.ts ET déclarer le composant dans app.module.ts (convention du dépôt, cf. PR #139), ajouter l'entrée <url> dans src/sitemap.xml ET dans prerender-routes.txt — ce dernier point est critique : prerender-routes.txt omet déjà 5 routes existantes faute d'avoir été mis à jour à leur création (cf. task_20260819172835_f24hge et task_20260913090000_h4k9zq, toujours blocked) ; ne pas répéter cette erreur sur une page neuve, sous peine de livrer une page jamais indexée comme les 5 précédentes. Utiliser SeoService (updateMetaTags / updateCanonicalUrl / structured data en @graph Service + BreadcrumbList + FAQPage) comme sur les pages locales existantes. Vocabulaire 100% B2C annuaire, jamais « plateforme »/« logiciel »/« gérer vos RDV ». Aucun avis, note, nombre de clients, prix ou statistique inventés. Après merge : flip uniquement si la ligne de tracker correspond à Toulouse spécifiquement — la ligne SEO_TRACKER.md « Scale géographique (Toulouse, Nantes, Lille, Nice...) » couvre plusieurs villes : ne pas la passer à ✅ Fait après cette seule page, car Nantes/Lille/Nice resteront à faire. Noter l'avancement dans les notes de la tâche plutôt que de modifier la ligne du tracker.",
+    "priority": "medium",
+    "status": "todo",
+    "dedup_key": "create_seo_page:/coiffeur-a-domicile-toulouse",
+    "target_url": "/coiffeur-a-domicile-toulouse",
+    "completed_at": null,
+    "completed_by_run": null,
+    "commit_sha": null,
+    "commit_urls": null,
+    "notes": null,
+    "blocked_reason": null
   }
 ]
