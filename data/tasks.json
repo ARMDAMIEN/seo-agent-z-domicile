@@ -552,5 +552,23 @@
     "submitted_at": "2026-10-16T00:55:00.000Z",
     "merged_at": "2026-10-16T02:04:29.000Z",
     "review_rejections": 0
+  },
+  {
+    "id": "task_20261021001333_pmwdgn",
+    "created_at": "2026-10-21T00:13:33.000Z",
+    "created_by_run": "2026-10-21",
+    "type": "investigation",
+    "title": "Investigation — \"rdv manucure en ligne\" (44 impr., position 40,3) sans ciblage dédié sur /manucure-domicile-paris",
+    "description": "GSC 28j (2026-09-21 -> 2026-10-18, sc-domain:z-domicile.fr) : la requete 'rdv manucure en ligne' genere 44 impressions, 0 clic, CTR 0%, position moyenne 40.27 - entierement atterrie sur /manucure-domicile-paris (verifie par filtre requete GSC). C'est l'une des requetes les plus generatrices d'impressions du site sur la periode (896 impressions totales toutes requetes confondues), soit ~4.9% du volume total du site - un volume significatif totalement invisible pour l'utilisateur (position 40 = page 4 des resultats). La page /manucure-domicile-paris cible le vocabulaire 'manucure a domicile paris' mais aucune formulation transactionnelle du type 'reservation en ligne' / 'rdv en ligne' n'y figure. Une tache content_enrichment classique n'a pas ete creee ici car content_enrichment:/manucure-domicile-paris est deja une tache non-done (status blocked, note du relecteur : 'deja livre, rien a ajouter sans dupliquer l'existant') - creer une 2e tache content_enrichment sur la meme URL violerait la regle de deduplication et risquerait une 2e PR concurrente sur la meme page. Decision qui revient a un humain : (1) reviser/rouvrir la tache content_enrichment:/manucure-domicile-paris bloquee pour y ajouter explicitement la formulation 'reservation en ligne' / 'prendre RDV en ligne' (par ex. nouvelle question FAQ 'Comment prendre RDV en ligne pour une manucure a domicile a Paris ?'), sans dupliquer les sections deja presentes ; (2) ou juger le volume insuffisant (44 impressions / 28 jours) pour justifier une reouverture et classer sans suite. Aucune donnee inventee : les chiffres ci-dessus sont les seuls connus, aucun prix/avis/note n'est suggere dans cette description.",
+    "priority": "medium",
+    "status": "todo",
+    "dedup_key": "investigation:rdv-manucure-en-ligne-mismatch",
+    "target_url": "/manucure-domicile-paris",
+    "completed_at": null,
+    "completed_by_run": null,
+    "commit_sha": null,
+    "commit_urls": null,
+    "notes": "",
+    "blocked_reason": null
   }
 ]
