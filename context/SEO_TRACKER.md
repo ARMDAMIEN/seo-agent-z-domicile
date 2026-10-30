@@ -58,7 +58,7 @@
 | Action | Priorité | Statut | Notes |
 | :---- | :---- | :---- | :---- |
 | Profils SaaS : G2, Capterra, GetApp | 🔴 Critique | 🟡 En cours | G2 : bug formulaire. Capterra/GetApp : inscrits via Gartner, accès en attente |
-| Scale géographique (Toulouse, Nantes, Lille, Nice...) | 🟢 Normal | 🟢 À faire | 1 ville/semaine, template répliqué et personnalisé |
+| Scale géographique (Toulouse, Nantes, Lille, Nice...) | 🟢 Normal | 🟢 À faire | 1 ville/semaine, template répliqué et personnalisé. Livré : Toulouse `/coiffeur-a-domicile-toulouse` (14/10/2026, PR #140), Nantes `/coiffeur-a-domicile-nantes` (30/10/2026, PR #141 — prerender + sitemap OK, indexation demandée). Restent : Lille, Nice, Strasbourg, Rennes, Montpellier — la ligne reste 🟢 À faire tant que ces villes ne sont pas livrées. |
 | Optimisation pages position 11-20 dans GSC | 🟡 Important | 🟢 À faire | Enrichir contenu des pages presque en top 10 |
 
 ---
